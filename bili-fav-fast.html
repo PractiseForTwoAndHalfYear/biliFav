@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B站收藏整理器</title>
+<script src="https://cdn.staticfile.net/react/18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://cdn.staticfile.net/react-dom/18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1f2937}
+h1,h2,h3,h4,p{margin:0}
+ol,ul{margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+svg{display:block}
+button{background:none;border:0;padding:0;cursor:pointer;color:inherit}
+button:disabled{cursor:default}
+input,select,textarea{font:inherit;color:inherit}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@keyframes spin{to{transform:rotate(360deg)}}
+.absolute{position:absolute}
+.accent-amber-500{accent-color:#f59e0b}
+.animate-spin{animation:spin 1s linear infinite}
+.backdrop-blur-md{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.bg-amber-100{background-color:#fef3c7}
+.bg-amber-200{background-color:#fde68a}
+.bg-amber-400{background-color:#fbbf24}
+.bg-amber-50{background-color:#fffbeb}
+.bg-black\/30{background-color:rgba(0, 0, 0, 0.3)}
+.bg-black\/70{background-color:rgba(0, 0, 0, 0.7)}
+.bg-clip-text{-webkit-background-clip:text;background-clip:text}
+.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}
+.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}
+.bg-gray-100{background-color:#f3f4f6}
+.bg-gray-200{background-color:#e5e7eb}
+.bg-green-500{background-color:#22c55e}
+.bg-indigo-100{background-color:#e0e7ff}
+.bg-indigo-500{background-color:#6366f1}
+.bg-purple-100{background-color:#f3e8ff}
+.bg-purple-50{background-color:#faf5ff}
+.bg-purple-500{background-color:#a855f7}
+.bg-red-50{background-color:#fef2f2}
+.bg-white{background-color:#fff}
+.bg-white\/80{background-color:rgba(255, 255, 255, 0.8)}
+.bg-yellow-400{background-color:#facc15}
+.block{display:block}
+.border{border-width:1px}
+.border-2{border-width:2px}
+.border-amber-200{border-color:#fde68a}
+.border-gray-200{border-color:#e5e7eb}
+.border-gray-300{border-color:#d1d5db}
+.border-indigo-200{border-color:#c7d2fe}
+.border-purple-400{border-color:#c084fc}
+.border-red-200{border-color:#fecaca}
+.bottom-1{bottom:0.25rem}
+.cursor-pointer{cursor:pointer}
+.disabled\:opacity-40:disabled{opacity:0.4}
+.duration-300{transition-duration:.3s}
+.flex{display:flex}
+.flex-1{flex:1 1 0%}
+.flex-col{flex-direction:column}
+.flex-shrink-0{flex-shrink:0}
+.flex-wrap{flex-wrap:wrap}
+.focus\:border-amber-400:focus{border-color:#fbbf24}
+.focus\:border-indigo-400:focus{border-color:#818cf8}
+.focus\:border-purple-400:focus{border-color:#c084fc}
+.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}
+.focus\:ring-2:focus{box-shadow:0 0 0 2px var(--tw-ring-color,#a855f7)}
+.focus\:ring-purple-300:focus{--tw-ring-color:#d8b4fe}
+.font-black{font-weight:900}
+.font-bold{font-weight:700}
+.font-medium{font-weight:500}
+.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.from-pink-100{--tw-gradient-from:#fce7f3;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(255,255,255,0))}
+.from-pink-400{--tw-gradient-from:#f472b6;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(255,255,255,0))}
+.from-pink-500{--tw-gradient-from:#ec4899;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(255,255,255,0))}
+.gap-1{gap:0.25rem}
+.gap-1\.5{gap:0.375rem}
+.gap-2{gap:0.5rem}
+.gap-3{gap:0.75rem}
+.gap-4{gap:1rem}
+.gap-x-3{column-gap:0.75rem}
+.gap-y-1{row-gap:0.25rem}
+.grid{display:grid}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.group:hover .group-hover\:opacity-100{opacity:1}
+.h-16{height:4rem}
+.h-20{height:5rem}
+.h-3{height:0.75rem}
+.h-5{height:1.25rem}
+.h-6{height:1.5rem}
+.h-full{height:100%}
+.hover\:bg-gray-200:hover{background-color:#e5e7eb}
+.hover\:bg-gray-50:hover{background-color:#f9fafb}
+.hover\:bg-green-100:hover{background-color:#dcfce7}
+.hover\:bg-purple-200:hover{background-color:#e9d5ff}
+.hover\:bg-yellow-100:hover{background-color:#fef9c3}
+.hover\:border-gray-300:hover{border-color:#d1d5db}
+.hover\:scale-105:hover{transform:scale(1.05)}
+.hover\:scale-\[1\.02\]:hover{transform:scale(1.02)}
+.hover\:shadow-lg:hover{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.hover\:text-gray-800:hover{color:#1f2937}
+.hover\:text-purple-600:hover{color:#9333ea}
+.inline-flex{display:inline-flex}
+.inset-0{top:0;right:0;bottom:0;left:0}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.justify-center{justify-content:center}
+.leading-snug{line-height:1.375}
+.left-3{left:0.75rem}
+.line-clamp-2{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.line-through{text-decoration-line:line-through}
+.list-decimal{list-style-type:decimal}
+.list-inside{list-style-position:inside}
+.max-h-64{max-height:16rem}
+.max-h-80{max-height:20rem}
+.max-w-6xl{max-width:72rem}
+.max-w-lg{max-width:32rem}
+.max-w-md{max-width:28rem}
+.mb-1{margin-bottom:0.25rem}
+.mb-1\.5{margin-bottom:0.375rem}
+.mb-2{margin-bottom:0.5rem}
+.mb-3{margin-bottom:0.75rem}
+.mb-4{margin-bottom:1rem}
+.mb-5{margin-bottom:1.25rem}
+.mb-6{margin-bottom:1.5rem}
+@media(min-width:768px){.md\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.min-h-screen{min-height:100vh}
+.min-w-0{min-width:0}
+.ml-1{margin-left:0.25rem}
+.ml-3{margin-left:0.75rem}
+.mt-0\.5{margin-top:0.125rem}
+.mt-1{margin-top:0.25rem}
+.mt-2{margin-top:0.5rem}
+.mt-3{margin-top:0.75rem}
+.mt-4{margin-top:1rem}
+.mx-auto{margin-left:auto;margin-right:auto}
+.object-cover{object-fit:cover}
+.opacity-0{opacity:0}
+.opacity-60{opacity:0.6}
+.opacity-90{opacity:0.9}
+.overflow-hidden{overflow:hidden}
+.overflow-y-auto{overflow-y:auto}
+.p-0\.5{padding:0.125rem}
+.p-1{padding:0.25rem}
+.p-10{padding:2.5rem}
+.p-12{padding:3rem}
+.p-2{padding:0.5rem}
+.p-3{padding:0.75rem}
+.p-4{padding:1rem}
+.p-5{padding:1.25rem}
+.p-6{padding:1.5rem}
+.p-8{padding:2rem}
+.pl-9{padding-left:2.25rem}
+.pr-3{padding-right:0.75rem}
+.pt-1{padding-top:0.25rem}
+.px-1{padding-left:0.25rem;padding-right:0.25rem}
+.px-1\.5{padding-left:0.375rem;padding-right:0.375rem}
+.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}
+.px-3{padding-left:0.75rem;padding-right:0.75rem}
+.px-4{padding-left:1rem;padding-right:1rem}
+.px-5{padding-left:1.25rem;padding-right:1.25rem}
+.px-6{padding-left:1.5rem;padding-right:1.5rem}
+.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}
+.py-1{padding-top:0.25rem;padding-bottom:0.25rem}
+.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}
+.py-12{padding-top:3rem;padding-bottom:3rem}
+.py-2{padding-top:0.5rem;padding-bottom:0.5rem}
+.py-3{padding-top:0.75rem;padding-bottom:0.75rem}
+.py-4{padding-top:1rem;padding-bottom:1rem}
+.py-6{padding-top:1.5rem;padding-bottom:1.5rem}
+.relative{position:relative}
+.right-1{right:0.25rem}
+.rounded{border-radius:0.25rem}
+.rounded-2xl{border-radius:1rem}
+.rounded-3xl{border-radius:1.5rem}
+.rounded-full{border-radius:9999px}
+.rounded-lg{border-radius:0.5rem}
+.rounded-xl{border-radius:0.75rem}
+.self-center{align-self:center}
+.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1)}
+.shadow-sm{box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+.shadow-xl{box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.space-y-1>:not([hidden])~:not([hidden]){margin-top:0.25rem}
+.space-y-1\.5>:not([hidden])~:not([hidden]){margin-top:0.375rem}
+.space-y-2>:not([hidden])~:not([hidden]){margin-top:0.5rem}
+.space-y-3>:not([hidden])~:not([hidden]){margin-top:0.75rem}
+.space-y-5>:not([hidden])~:not([hidden]){margin-top:1.25rem}
+.space-y-6>:not([hidden])~:not([hidden]){margin-top:1.5rem}
+.sticky{position:sticky}
+.text-2xl{font-size:1.5rem;line-height:2rem}
+.text-3xl{font-size:1.875rem;line-height:2.25rem}
+.text-5xl{font-size:3rem;line-height:1}
+.text-6xl{font-size:3.75rem;line-height:1}
+.text-amber-500{color:#f59e0b}
+.text-amber-700{color:#b45309}
+.text-amber-800{color:#92400e}
+.text-amber-900{color:#78350f}
+.text-center{text-align:center}
+.text-gray-400{color:#9ca3af}
+.text-gray-500{color:#6b7280}
+.text-gray-600{color:#4b5563}
+.text-gray-700{color:#374151}
+.text-gray-800{color:#1f2937}
+.text-indigo-700{color:#4338ca}
+.text-left{text-align:left}
+.text-lg{font-size:1.125rem;line-height:1.75rem}
+.text-pink-500{color:#ec4899}
+.text-purple-500{color:#a855f7}
+.text-purple-600{color:#9333ea}
+.text-purple-700{color:#7e22ce}
+.text-red-700{color:#b91c1c}
+.text-sm{font-size:0.875rem;line-height:1.25rem}
+.text-transparent{color:transparent}
+.text-white{color:#fff}
+.text-xl{font-size:1.25rem;line-height:1.75rem}
+.text-xs{font-size:0.75rem;line-height:1rem}
+.to-amber-100{--tw-gradient-to:#fef3c7}
+.to-amber-500{--tw-gradient-to:#f59e0b}
+.to-purple-500{--tw-gradient-to:#a855f7}
+.top-0{top:0}
+.top-1\/2{top:50%}
+.transition{transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
+.transition-all{transition-property:all;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
+.transition-opacity{transition-property:opacity;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
+.transition-transform{transition-property:transform;transition-duration:.15s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
+.via-purple-100{--tw-gradient-stops:var(--tw-gradient-from),#f3e8ff,var(--tw-gradient-to,rgba(255,255,255,0))}
+.via-purple-500{--tw-gradient-stops:var(--tw-gradient-from),#a855f7,var(--tw-gradient-to,rgba(255,255,255,0))}
+.w-20{width:5rem}
+.w-32{width:8rem}
+.w-5{width:1.25rem}
+.w-6{width:1.5rem}
+.w-full{width:100%}
+.z-10{z-index:10}
+
+/* 动态注入的渐变色阶：StatCard 的 color prop + 评级档位 TIERS.cls，扫描器无法静态发现，手动补全 */
+.from-purple-400{--tw-gradient-from:#c084fc;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(192,132,252,0))}
+.to-pink-400{--tw-gradient-to:#f472b6}
+.from-amber-400{--tw-gradient-from:#fbbf24;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(251,191,36,0))}
+.to-orange-400{--tw-gradient-to:#fb923c}
+.from-indigo-400{--tw-gradient-from:#818cf8;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(129,140,248,0))}
+.to-blue-400{--tw-gradient-to:#60a5fa}
+.from-gray-400{--tw-gradient-from:#9ca3af;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(156,163,175,0))}
+.to-gray-500{--tw-gradient-to:#6b7280}
+.from-yellow-400{--tw-gradient-from:#facc15;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(250,204,21,0))}
+.to-amber-400{--tw-gradient-to:#fbbf24}
+.from-rose-500{--tw-gradient-from:#f43f5e;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(244,63,94,0))}
+.to-red-500{--tw-gradient-to:#ef4444}
+.from-yellow-300{--tw-gradient-from:#fde047;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(253,224,71,0))}
+.to-amber-300{--tw-gradient-to:#fcd34d}
+.from-sky-400{--tw-gradient-from:#38bdf8;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(56,189,248,0))}
+.to-blue-400{--tw-gradient-to:#60a5fa}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+"use strict";
+const { useState, useEffect, useMemo, useRef } = React;
+// localStorage adapter
+const LS = {
+    get(k) { try {
+        const v = localStorage.getItem(k);
+        return v ? { value: v } : null;
+    }
+    catch {
+        return null;
+    } },
+    set(k, v) { try {
+        localStorage.setItem(k, v);
+    }
+    catch { } },
+    del(k) { try {
+        localStorage.removeItem(k);
+    }
+    catch { } },
+};
+const STORE = { config: 'biliFav:config', videos: 'biliFav:videos', overrides: 'biliFav:overrides' };
+const DEFAULT_CONFIG = { mid: '', folders: [], whitelist: [], listenTarget: 7200, watchTarget: 3600 };
+const LISTEN_KW = ['访谈', '对话', '专访', '杂谈', '闲聊', '聊聊', '唠嗑', '漫谈', '播客', '电台', 'podcast', '演讲', '圆桌', '谈话', '分享会', '对谈', '聊天', '闲谈', '畅聊'];
+const PROXIES = [
+    u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+    u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+    u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+    u => `https://corsproxy.org/?${encodeURIComponent(u)}`,
+];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+// SVG icons
+const Ic = ({ s = 16, c = '', ch }) => React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: s, height: s, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: c }, ch);
+const Star = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("polygon", { points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" }) });
+const Trophy = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("path", { d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6" }),
+        React.createElement("path", { d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18" }),
+        React.createElement("path", { d: "M4 22h16" }),
+        React.createElement("path", { d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" }),
+        React.createElement("path", { d: "M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" }),
+        React.createElement("path", { d: "M18 2H6v7a6 6 0 0 0 12 0V2Z" })) });
+const Eye = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("path", { d: "M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" }),
+        React.createElement("circle", { cx: "12", cy: "12", r: "3" })) });
+const RefreshCw = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("polyline", { points: "23 4 23 10 17 10" }),
+        React.createElement("polyline", { points: "1 20 1 14 7 14" }),
+        React.createElement("path", { d: "M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" })) });
+const Settings = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("circle", { cx: "12", cy: "12", r: "3" }),
+        React.createElement("path", { d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" })) });
+const Library = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("path", { d: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20" }),
+        React.createElement("path", { d: "M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" })) });
+const Calendar = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }),
+        React.createElement("line", { x1: "16", y1: "2", x2: "16", y2: "6" }),
+        React.createElement("line", { x1: "8", y1: "2", x2: "8", y2: "6" }),
+        React.createElement("line", { x1: "3", y1: "10", x2: "21", y2: "10" })) });
+const Sparkles = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("path", { d: "m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" }) });
+const Loader2 = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("path", { d: "M21 12a9 9 0 1 1-6.219-8.56" }) });
+const ExternalLink = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" }),
+        React.createElement("polyline", { points: "15 3 21 3 21 9" }),
+        React.createElement("line", { x1: "10", y1: "14", x2: "21", y2: "3" })) });
+const Search = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("circle", { cx: "11", cy: "11", r: "8" }),
+        React.createElement("line", { x1: "21", y1: "21", x2: "16.65", y2: "16.65" })) });
+const Check = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("polyline", { points: "20 6 9 16 4 11" }) });
+const AlertCircle = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("circle", { cx: "12", cy: "12", r: "10" }),
+        React.createElement("line", { x1: "12", y1: "8", x2: "12", y2: "12" }),
+        React.createElement("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" })) });
+const ChevronRight = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("polyline", { points: "9 18 15 12 9 6" }) });
+const Trash2 = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("polyline", { points: "3 6 5 6 21 6" }),
+        React.createElement("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" })) });
+const FolderOpen = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement("path", { d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" }) });
+const Car = ({ size: s = 16, className: c = '' }) => React.createElement(Ic, { s: s, c: c, ch: React.createElement(React.Fragment, null,
+        React.createElement("path", { d: "M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h11l5 5v5h-2" }),
+        React.createElement("circle", { cx: "7", cy: "17", r: "2" }),
+        React.createElement("circle", { cx: "15", cy: "17", r: "2" })) });
+async function biliFetch(url) {
+    let err;
+    for (const p of PROXIES) {
+        try {
+            const r = await fetch(p(url));
+            if (!r.ok)
+                throw new Error('HTTP ' + r.status);
+            const text = await r.text();
+            let d;
+            try {
+                d = JSON.parse(text);
+            }
+            catch {
+                throw new Error('响应不是 JSON');
+            }
+            if (d.contents) {
+                try {
+                    d = JSON.parse(d.contents);
+                }
+                catch { }
+            }
+            if (d.code !== 0)
+                throw new Error(d.message || ('code=' + d.code));
+            return d.data;
+        }
+        catch (e) {
+            err = e;
+        }
+    }
+    throw new Error(`所有代理均失败（${err === null || err === void 0 ? void 0 : err.message}）。请确认收藏夹已设公开，或稍后重试。`);
+}
+const fmtDur = s => { if (!s)
+    return '0:00'; const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sc = s % 60; return h ? `${h}:${String(m).padStart(2, '0')}:${String(sc).padStart(2, '0')}` : `${m}:${String(sc).padStart(2, '0')}`; };
+const fmtDurChn = s => { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h && m ? `${h}小时${m}分` : h ? `${h}小时` : `${m}分钟`; };
+const fmtDate = ts => { const d = new Date(ts * 1000); return `${d.getMonth() + 1}/${d.getDate()}`; };
+function autoBucket(v, wl) {
+    if (wl.has(v.up_mid))
+        return 'listen';
+    const t = (v.title + ' ' + (v.intro || '')).toLowerCase();
+    if (LISTEN_KW.some(k => t.includes(k.toLowerCase())))
+        return 'listen';
+    const tn = (v.tname || '').toLowerCase();
+    if (tn.includes('演讲') || tn.includes('访谈') || tn.includes('播客') || tn.includes('脱口秀'))
+        return 'listen';
+    return 'watch';
+}
+const getBucket = (v, ov, wl) => { var _a; return ((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.bucket) || autoBucket(v, wl); };
+function buildDays(videos, ov, wl, lSec, wSec) {
+    var _a;
+    const lp = [], wp = [];
+    for (const v of videos) {
+        if ((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched)
+            continue;
+        if (getBucket(v, ov, wl) === 'listen')
+            lp.push(v);
+        else
+            wp.push(v);
+    }
+    lp.sort((a, b) => b.fav_time - a.fav_time);
+    wp.sort((a, b) => b.fav_time - a.fav_time);
+    const days = [];
+    let li = 0, wi = 0;
+    while ((li < lp.length || wi < wp.length) && days.length < 30) {
+        const day = { listen: [], watch: [], lSec: 0, wSec: 0 };
+        while (li < lp.length && day.lSec < lSec) {
+            const v = lp[li];
+            if (day.lSec + v.duration > lSec + 600 && day.listen.length)
+                break;
+            day.listen.push(v);
+            day.lSec += v.duration;
+            li++;
+        }
+        while (wi < wp.length && day.wSec < wSec) {
+            const v = wp[wi];
+            if (day.wSec + v.duration > wSec + 600 && day.watch.length)
+                break;
+            day.watch.push(v);
+            day.wSec += v.duration;
+            wi++;
+        }
+        if (!day.listen.length && !day.watch.length)
+            break;
+        days.push(day);
+    }
+    return days;
+}
+// ── Components ──────────────────────────────────────────────
+function TabBtn({ active, onClick, icon: Icon, children }) {
+    return React.createElement("button", { onClick: onClick, className: `flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold transition-all ${active ? 'bg-white shadow text-purple-600' : 'text-gray-600 hover:text-gray-800'}` },
+        React.createElement(Icon, { size: 16 }),
+        children);
+}
+function StatCard({ label, value, color, emoji }) {
+    return React.createElement("div", { className: `bg-gradient-to-br ${color} rounded-2xl p-3 text-white shadow` },
+        React.createElement("div", { className: "flex items-center justify-between" },
+            React.createElement("span", { className: "text-xs font-bold opacity-90" }, label),
+            React.createElement("span", { className: "text-lg" }, emoji)),
+        React.createElement("div", { className: "text-2xl font-black" }, value));
+}
+function ChipBtn({ active, onClick, children }) {
+    return React.createElement("button", { onClick: onClick, className: `px-3 py-1.5 rounded-full text-sm font-bold transition-all ${active ? 'bg-white shadow text-purple-600' : 'text-gray-600 hover:text-gray-800'}` }, children);
+}
+function VideoCard({ v, ov, wl, toggleStar, toggleWatched, setBucket, showSwitch }) {
+    const o = ov[v.bvid] || {}, bucket = getBucket(v, ov, wl);
+    return (React.createElement("div", { className: `bg-white rounded-2xl shadow hover:shadow-lg transition-all p-3 flex gap-3 ${o.watched ? 'opacity-60' : ''}` },
+        React.createElement("a", { href: `https://www.bilibili.com/video/${v.bvid}`, target: "_blank", rel: "noreferrer", className: "flex-shrink-0 relative group" },
+            React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", className: "w-32 h-20 object-cover rounded-xl bg-gray-100", loading: "lazy", onError: e => { e.target.style.opacity = '0.15'; } }),
+            React.createElement("div", { className: "absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded font-mono" }, fmtDur(v.duration)),
+            React.createElement("div", { className: "absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center" },
+                React.createElement(ExternalLink, { className: "text-white", size: 20 }))),
+        React.createElement("div", { className: "flex-1 min-w-0" },
+            React.createElement("a", { href: `https://www.bilibili.com/video/${v.bvid}`, target: "_blank", rel: "noreferrer", className: `block font-bold text-gray-800 hover:text-purple-600 line-clamp-2 leading-snug ${o.watched ? 'line-through' : ''}` }, v.title),
+            React.createElement("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 mt-1" },
+                React.createElement("span", { className: "font-medium text-gray-600" }, v.up_name),
+                v.tname && React.createElement("span", { className: "px-1.5 py-0.5 bg-gray-100 rounded" }, v.tname),
+                React.createElement("span", null,
+                    "\u6536\u85CF\u4E8E ",
+                    fmtDate(v.fav_time)),
+                React.createElement("span", { className: "text-gray-400" }, v.folder_title)),
+            React.createElement("div", { className: "flex flex-wrap gap-1.5 mt-2" },
+                showSwitch ? (React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-0.5" },
+                    React.createElement("button", { onClick: () => setBucket(v.bvid, 'listen'), className: `px-2.5 py-1 rounded-full text-xs font-bold transition ${bucket === 'listen' ? 'bg-amber-400 text-white' : 'text-gray-500'}` }, "\uD83D\uDE97 \u542C"),
+                    React.createElement("button", { onClick: () => setBucket(v.bvid, 'watch'), className: `px-2.5 py-1 rounded-full text-xs font-bold transition ${bucket === 'watch' ? 'bg-indigo-500 text-white' : 'text-gray-500'}` }, "\uD83D\uDC40 \u770B"))) : (React.createElement("span", { className: `px-2.5 py-1 rounded-full text-xs font-bold ${bucket === 'listen' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'}` }, bucket === 'listen' ? '🚗 听' : '👀 看')),
+                React.createElement("button", { onClick: () => toggleStar(v.bvid), className: `px-2.5 py-1 rounded-full text-xs font-bold transition flex items-center gap-1 ${o.starred ? 'bg-yellow-400 text-white' : 'bg-gray-100 text-gray-500 hover:bg-yellow-100'}` },
+                    React.createElement(Star, { size: 12, className: o.starred ? 'fill-current' : '' }),
+                    o.starred ? '已加精' : '加精'),
+                React.createElement("button", { onClick: () => toggleWatched(v.bvid), className: `px-2.5 py-1 rounded-full text-xs font-bold transition flex items-center gap-1 ${o.watched ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-green-100'}` },
+                    React.createElement(Check, { size: 12 }),
+                    o.watched ? '已看' : '标记已看')))));
+}
+function SetupView({ midInput, setMidInput, onSubmit, error }) {
+    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full" },
+            React.createElement("div", { className: "text-center mb-6" },
+                React.createElement("div", { className: "text-6xl mb-3" }, "\uD83D\uDCFA\u2728"),
+                React.createElement("h1", { className: "text-3xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent mb-2" }, "B\u7AD9\u6536\u85CF\u6574\u7406\u5668"),
+                React.createElement("p", { className: "text-gray-600" }, "\u628A\u4F60\u7684\u6536\u85CF\u81EA\u52A8\u5206\u7C7B\uFF0C\u6BCF\u5929\u7ED9\u4F60\u6392\u597D")),
+            React.createElement("div", { className: "bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-5 text-sm" },
+                React.createElement("p", { className: "font-bold text-amber-900 mb-2" }, "\uD83D\uDCDD \u51C6\u5907\u5DE5\u4F5C"),
+                React.createElement("ol", { className: "space-y-1.5 text-amber-800 list-decimal list-inside" },
+                    React.createElement("li", null, "\u767B\u5F55 B \u7AD9 \u2192 \u70B9\u5934\u50CF\u8FDB\u5165\u4E2A\u4EBA\u7A7A\u95F4"),
+                    React.createElement("li", null,
+                        "\u5730\u5740\u680F ",
+                        React.createElement("code", { className: "bg-amber-200 px-1 rounded" },
+                            "space.bilibili.com/",
+                            React.createElement("b", null, "\u6570\u5B57")),
+                        "\uFF0C\u90A3\u4E32\u6570\u5B57\u662F\u4F60\u7684 UID"),
+                    React.createElement("li", null, "\u628A\u8981\u5206\u7C7B\u7684\u6536\u85CF\u5939\u8BBE\u4E3A\"\u516C\u5F00\"\uFF08\u7BA1\u7406 \u2192 \u7F16\u8F91 \u2192 \u9690\u79C1\u8BBE\u7F6E\uFF09"))),
+            React.createElement("label", { className: "block text-sm font-bold text-gray-700 mb-2" }, "\u4F60\u7684 B \u7AD9 UID"),
+            React.createElement("div", { className: "flex gap-2" },
+                React.createElement("input", { type: "text", inputMode: "numeric", value: midInput, onChange: e => setMidInput(e.target.value.trim()), placeholder: "\u4F8B\u5982\uFF1A12345678", onKeyDown: e => e.key === 'Enter' && midInput && onSubmit(midInput), className: "flex-1 px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none text-lg font-mono" }),
+                React.createElement("button", { onClick: () => midInput && onSubmit(midInput), disabled: !midInput, className: "px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold disabled:opacity-40 hover:scale-105 transition-transform" },
+                    "\u4E0B\u4E00\u6B65 ",
+                    React.createElement(ChevronRight, { className: "inline", size: 18 }))),
+            error && React.createElement("div", { className: "mt-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm flex gap-2" },
+                React.createElement(AlertCircle, { size: 18, className: "flex-shrink-0 mt-0.5" }),
+                React.createElement("span", null, error)))));
+}
+function FolderPickerView({ picker, setPicker, onConfirm, onCancel }) {
+    const allIds = picker.folders.map(f => f.id);
+    const toggle = id => { const s = new Set(picker.selected); s.has(id) ? s.delete(id) : s.add(id); setPicker({ ...picker, selected: s }); };
+    const sel = picker.folders.filter(f => picker.selected.has(f.id));
+    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full" },
+            React.createElement("h2", { className: "text-2xl font-black text-gray-800 mb-2 flex items-center gap-2" },
+                React.createElement(FolderOpen, { className: "text-purple-500", size: 24 }),
+                " \u9009\u62E9\u8981\u5206\u6790\u7684\u6536\u85CF\u5939"),
+            React.createElement("div", { className: "flex items-center justify-between mb-4" },
+                React.createElement("p", { className: "text-gray-600 text-sm" }, "\u53EA\u663E\u793A\u516C\u5F00\u7684\u6536\u85CF\u5939\uFF0C\u52FE\u9009\u540E\u62C9\u53D6\u89C6\u9891\u3002"),
+                React.createElement("div", { className: "flex gap-2 ml-3 flex-shrink-0" },
+                    React.createElement("button", { onClick: () => setPicker({ ...picker, selected: new Set(allIds) }), className: "px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 hover:bg-purple-200" }, "\u5168\u9009"),
+                    React.createElement("button", { onClick: () => setPicker({ ...picker, selected: new Set() }), className: "px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 hover:bg-gray-200" }, "\u5168\u4E0D\u9009"))),
+            React.createElement("div", { className: "space-y-2 max-h-80 overflow-y-auto mb-5" }, picker.folders.map(f => (React.createElement("button", { key: f.id, onClick: () => toggle(f.id), className: `w-full flex items-center gap-3 p-3 rounded-2xl border-2 transition-all ${picker.selected.has(f.id) ? 'border-purple-400 bg-purple-50' : 'border-gray-200 hover:border-gray-300'}` },
+                React.createElement("div", { className: `w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 ${picker.selected.has(f.id) ? 'bg-purple-500 text-white' : 'border-2 border-gray-300'}` }, picker.selected.has(f.id) && React.createElement(Check, { size: 16 })),
+                React.createElement("div", { className: "flex-1 text-left" },
+                    React.createElement("div", { className: "font-bold text-gray-800" }, f.title),
+                    React.createElement("div", { className: "text-xs text-gray-500" },
+                        f.count,
+                        " \u4E2A\u89C6\u9891")))))),
+            React.createElement("div", { className: "flex gap-2" },
+                React.createElement("button", { onClick: onCancel, className: "px-5 py-3 rounded-2xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200" }, "\u53D6\u6D88"),
+                React.createElement("button", { onClick: () => onConfirm(picker.mid, sel), disabled: !sel.length, className: "flex-1 px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold disabled:opacity-40 hover:scale-[1.02] transition-transform" },
+                    "\u5F00\u59CB\u52A0\u8F7D ",
+                    sel.length ? `(${sel.reduce((s, f) => s + f.count, 0)} 个视频)` : '')))));
+}
+function LibraryView({ videos, ov, wl, toggleStar, toggleWatched, setBucket }) {
+    const [bf, setBf] = useState('all'), [upF, setUpF] = useState(''), [q, setQ] = useState(''), [sort, setSort] = useState('fav_desc'), [hideW, setHideW] = useState(true);
+    const ups = useMemo(() => { var _a; const m = new Map(); for (const v of videos)
+        m.set(v.up_mid, { mid: v.up_mid, name: v.up_name, count: (((_a = m.get(v.up_mid)) === null || _a === void 0 ? void 0 : _a.count) || 0) + 1 }); return [...m.values()].sort((a, b) => b.count - a.count); }, [videos]);
+    const filtered = useMemo(() => {
+        let r = videos;
+        if (hideW)
+            r = r.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched); });
+        if (bf !== 'all')
+            r = r.filter(v => getBucket(v, ov, wl) === bf);
+        if (upF)
+            r = r.filter(v => v.up_mid == upF);
+        if (q) {
+            const s = q.toLowerCase();
+            r = r.filter(v => v.title.toLowerCase().includes(s) || v.up_name.toLowerCase().includes(s) || (v.tname || '').toLowerCase().includes(s));
+        }
+        const S = { fav_desc: (a, b) => b.fav_time - a.fav_time, fav_asc: (a, b) => a.fav_time - b.fav_time, dur_desc: (a, b) => b.duration - a.duration, dur_asc: (a, b) => a.duration - b.duration, title: (a, b) => a.title.localeCompare(b.title, 'zh') };
+        return [...r].sort(S[sort]);
+    }, [videos, ov, wl, bf, upF, q, sort, hideW]);
+    const st = useMemo(() => ({ total: videos.length, watched: videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched; }).length, starred: videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.starred; }).length, listen: videos.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched) && getBucket(v, ov, wl) === 'listen'; }).length, watch: videos.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched) && getBucket(v, ov, wl) === 'watch'; }).length }), [videos, ov, wl]);
+    return (React.createElement("div", null,
+        React.createElement("div", { className: "grid grid-cols-2 md:grid-cols-5 gap-3 mb-5" },
+            React.createElement(StatCard, { label: "\u603B\u6536\u85CF", value: st.total, color: "from-purple-400 to-pink-400", emoji: "\uD83D\uDCDA" }),
+            React.createElement(StatCard, { label: "\u5F00\u8F66\u542C", value: st.listen, color: "from-amber-400 to-orange-400", emoji: "\uD83D\uDE97" }),
+            React.createElement(StatCard, { label: "\u4E13\u6CE8\u770B", value: st.watch, color: "from-indigo-400 to-blue-400", emoji: "\uD83D\uDC40" }),
+            React.createElement(StatCard, { label: "\u5DF2\u770B", value: st.watched, color: "from-gray-400 to-gray-500", emoji: "\u2705" }),
+            React.createElement(StatCard, { label: "\u7CBE\u534E", value: st.starred, color: "from-yellow-400 to-amber-400", emoji: "\u2B50" })),
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-4 mb-5" },
+            React.createElement("div", { className: "flex flex-wrap gap-2 items-center" },
+                React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-1" },
+                    React.createElement(ChipBtn, { active: bf === 'all', onClick: () => setBf('all') }, "\u5168\u90E8"),
+                    React.createElement(ChipBtn, { active: bf === 'listen', onClick: () => setBf('listen') }, "\uD83D\uDE97 \u542C"),
+                    React.createElement(ChipBtn, { active: bf === 'watch', onClick: () => setBf('watch') }, "\uD83D\uDC40 \u770B")),
+                React.createElement("div", { className: "flex-1 relative", style: { minWidth: '180px' } },
+                    React.createElement(Search, { size: 16, className: "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" }),
+                    React.createElement("input", { value: q, onChange: e => setQ(e.target.value), placeholder: "\u641C\u6807\u9898\u3001UP \u4E3B\u3001\u5206\u533A...", className: "w-full pl-9 pr-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300" })),
+                React.createElement("select", { value: upF, onChange: e => setUpF(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
+                    React.createElement("option", { value: "" }, "\u6240\u6709 UP \u4E3B"),
+                    ups.map(u => React.createElement("option", { key: u.mid, value: u.mid },
+                        u.name,
+                        " (",
+                        u.count,
+                        ")"))),
+                React.createElement("select", { value: sort, onChange: e => setSort(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
+                    React.createElement("option", { value: "fav_desc" }, "\u6536\u85CF\uFF1A\u6700\u65B0"),
+                    React.createElement("option", { value: "fav_asc" }, "\u6536\u85CF\uFF1A\u6700\u65E9"),
+                    React.createElement("option", { value: "dur_desc" }, "\u65F6\u957F\uFF1A\u957F\u2192"),
+                    React.createElement("option", { value: "dur_asc" }, "\u65F6\u957F\uFF1A\u77ED\u2192"),
+                    React.createElement("option", { value: "title" }, "\u6807\u9898")),
+                React.createElement("label", { className: "flex items-center gap-1.5 text-sm font-medium text-gray-600 cursor-pointer" },
+                    React.createElement("input", { type: "checkbox", checked: hideW, onChange: e => setHideW(e.target.checked), className: "rounded" }),
+                    "\u9690\u85CF\u5DF2\u770B"))),
+        React.createElement("p", { className: "text-sm text-gray-600 mb-3" },
+            "\u663E\u793A ",
+            filtered.length,
+            " \u4E2A\u89C6\u9891"),
+        React.createElement("div", { className: "space-y-3" },
+            filtered.map(v => React.createElement(VideoCard, { key: v.bvid, v: v, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched, setBucket: setBucket, showSwitch: true })),
+            !filtered.length && React.createElement("div", { className: "text-center py-12 text-gray-500" },
+                React.createElement("div", { className: "text-5xl mb-2" }, "\uD83C\uDF31"),
+                "\u6CA1\u6709\u7B26\u5408\u6761\u4EF6\u7684\u89C6\u9891"))));
+}
+function TodayView({ videos, ov, wl, config, toggleStar, toggleWatched }) {
+    const days = useMemo(() => buildDays(videos, ov, wl, config.listenTarget, config.watchTarget), [videos, ov, wl, config]);
+    if (!days.length)
+        return React.createElement("div", { className: "bg-white rounded-3xl shadow p-12 text-center" },
+            React.createElement("div", { className: "text-6xl mb-3" }, "\uD83C\uDF89"),
+            React.createElement("h3", { className: "text-xl font-black text-gray-800" }, "\u6240\u6709\u89C6\u9891\u90FD\u770B\u5B8C\u5566\uFF01"),
+            React.createElement("p", { className: "text-gray-600 mt-2" }, "\u53BB B \u7AD9\u518D\u6536\u85CF\u4E00\u4E9B\u5427\uFF5E"));
+    return (React.createElement("div", { className: "space-y-6" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1" }, "\uD83D\uDCC5 \u6BCF\u65E5\u63A8\u8350"),
+            React.createElement("p", { className: "text-sm text-gray-600" },
+                "\u6309\u4F60\u8BBE\u7F6E\u7684\u65F6\u957F\uFF08\uD83D\uDE97 ",
+                fmtDurChn(config.listenTarget),
+                " \u542C / \uD83D\uDC40 ",
+                fmtDurChn(config.watchTarget),
+                " \u770B\uFF09\u81EA\u52A8\u6253\u5305\u672A\u770B\u7684\u89C6\u9891\u3002")),
+        days.map((day, i) => (React.createElement("div", { key: i, className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h3", { className: "text-lg font-black text-gray-800 mb-4" }, i === 0 ? '🌟 今天' : `第 ${i + 1} 天`),
+            day.listen.length > 0 && React.createElement("div", { className: "mb-4" },
+                React.createElement("div", { className: "flex items-center justify-between mb-2" },
+                    React.createElement("h4", { className: "font-bold text-amber-700 flex items-center gap-1.5" },
+                        React.createElement(Car, { size: 18 }),
+                        " \u5F00\u8F66\u542C"),
+                    React.createElement("span", { className: "text-sm text-amber-700 font-bold" },
+                        fmtDurChn(day.lSec),
+                        " \u00B7 ",
+                        day.listen.length,
+                        "\u4E2A")),
+                React.createElement("div", { className: "space-y-2" }, day.listen.map(v => React.createElement(VideoCard, { key: v.bvid, v: v, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched })))),
+            day.watch.length > 0 && React.createElement("div", null,
+                React.createElement("div", { className: "flex items-center justify-between mb-2" },
+                    React.createElement("h4", { className: "font-bold text-indigo-700 flex items-center gap-1.5" },
+                        React.createElement(Eye, { size: 18 }),
+                        " \u4E13\u6CE8\u770B"),
+                    React.createElement("span", { className: "text-sm text-indigo-700 font-bold" },
+                        fmtDurChn(day.wSec),
+                        " \u00B7 ",
+                        day.watch.length,
+                        "\u4E2A")),
+                React.createElement("div", { className: "space-y-2" }, day.watch.map(v => React.createElement(VideoCard, { key: v.bvid, v: v, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched })))))))));
+}
+function HighlightsView({ videos, ov, wl, toggleStar, toggleWatched }) {
+    const starred = videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.starred; }).sort((a, b) => b.fav_time - a.fav_time);
+    if (!starred.length)
+        return React.createElement("div", { className: "bg-white rounded-3xl shadow p-12 text-center" },
+            React.createElement("div", { className: "text-6xl mb-3" }, "\u2B50"),
+            React.createElement("h3", { className: "text-xl font-black text-gray-800" }, "\u8FD8\u6CA1\u6709\u7CBE\u534E\u89C6\u9891"),
+            React.createElement("p", { className: "text-gray-600 mt-2" }, "\u5728\u89C6\u9891\u5361\u7247\u4E0A\u70B9\"\u52A0\u7CBE\"\uFF0C\u503C\u5F97\u56DE\u770B\u7684\u5185\u5BB9\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC"));
+    return React.createElement("div", null,
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 mb-5" },
+            React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1" }, "\u2B50 \u7CBE\u534E\u56DE\u770B"),
+            React.createElement("p", { className: "text-sm text-gray-600" },
+                "\u4F60\u624B\u52A8\u52A0\u7CBE\u7684 ",
+                starred.length,
+                " \u4E2A\u89C6\u9891\u3002")),
+        React.createElement("div", { className: "space-y-3" }, starred.map(v => React.createElement(VideoCard, { key: v.bvid, v: v, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched }))));
+}
+function SettingsView({ config, setConfig, videos, onReloadFolders, clearWatched, removeWatchedVideos, fullReset }) {
+    var _a;
+    const ups = useMemo(() => { var _a; const m = new Map(); for (const v of videos)
+        m.set(v.up_mid, { mid: v.up_mid, name: v.up_name, count: (((_a = m.get(v.up_mid)) === null || _a === void 0 ? void 0 : _a.count) || 0) + 1 }); return [...m.values()].sort((a, b) => b.count - a.count); }, [videos]);
+    const wlSet = new Set(config.whitelist || []);
+    const toggleWl = mid => { const s = new Set(wlSet); s.has(mid) ? s.delete(mid) : s.add(mid); setConfig({ ...config, whitelist: [...s] }); };
+    return (React.createElement("div", { className: "space-y-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h3", { className: "text-lg font-black text-gray-800" }, "\uD83C\uDFAF \u6BCF\u65E5\u76EE\u6807\u65F6\u957F"),
+            React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, "\u5F71\u54CD\u300C\u6BCF\u65E5\u6E05\u5355\u300D\u81EA\u52A8\u6253\u5305\u7684\u65F6\u957F"),
+            React.createElement("div", { className: "grid grid-cols-2 gap-4" },
+                React.createElement("div", null,
+                    React.createElement("label", { className: "block text-sm font-bold text-amber-700 mb-1.5" }, "\uD83D\uDE97 \u5F00\u8F66\u542C"),
+                    React.createElement("div", { className: "flex items-center gap-2" },
+                        React.createElement("input", { type: "number", step: "0.5", min: "0.5", max: "8", value: config.listenTarget / 3600, onChange: e => setConfig({ ...config, listenTarget: Math.round((parseFloat(e.target.value) || 2) * 3600) }), className: "w-20 px-3 py-2 rounded-xl border-2 border-amber-200 focus:border-amber-400 focus:outline-none font-mono text-lg" }),
+                        React.createElement("span", { className: "text-gray-600" }, "\u5C0F\u65F6"))),
+                React.createElement("div", null,
+                    React.createElement("label", { className: "block text-sm font-bold text-indigo-700 mb-1.5" }, "\uD83D\uDC40 \u4E13\u6CE8\u770B"),
+                    React.createElement("div", { className: "flex items-center gap-2" },
+                        React.createElement("input", { type: "number", step: "0.5", min: "0.5", max: "8", value: config.watchTarget / 3600, onChange: e => setConfig({ ...config, watchTarget: Math.round((parseFloat(e.target.value) || 1) * 3600) }), className: "w-20 px-3 py-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-400 focus:outline-none font-mono text-lg" }),
+                        React.createElement("span", { className: "text-gray-600" }, "\u5C0F\u65F6"))))),
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h3", { className: "text-lg font-black text-gray-800" }, '🎙️ 「总是当听」的 UP 主'),
+            React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, "\u52FE\u9009\u540E\uFF0C\u4ED6\u4EEC\u7684\u6240\u6709\u89C6\u9891\u90FD\u5F52\u5230\u300C\u5F00\u8F66\u542C\u300D"),
+            React.createElement("div", { className: "max-h-64 overflow-y-auto space-y-1.5" }, ups.map(u => (React.createElement("label", { key: u.mid, className: "flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer" },
+                React.createElement("input", { type: "checkbox", checked: wlSet.has(u.mid), onChange: () => toggleWl(u.mid), className: "w-5 h-5 rounded accent-amber-500" }),
+                React.createElement("span", { className: "font-medium text-gray-800" }, u.name),
+                React.createElement("span", { className: "text-xs text-gray-500 ml-1" },
+                    u.count,
+                    " \u4E2A")))))),
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h3", { className: "text-lg font-black text-gray-800 mb-2" }, "\uD83D\uDD04 \u6570\u636E\u7BA1\u7406"),
+            React.createElement("div", { className: "space-y-2" }, [
+                [onReloadFolders, RefreshCw, 'bg-purple-100 text-purple-700 hover:bg-purple-200', '重新选择/加载收藏夹'],
+                [clearWatched, Eye, 'bg-blue-100 text-blue-700 hover:bg-blue-200', '清空"已看"标记（视频保留）'],
+                [removeWatchedVideos, Trash2, 'bg-orange-100 text-orange-700 hover:bg-orange-200', '从列表移除已看视频'],
+                [fullReset, AlertCircle, 'bg-red-100 text-red-700 hover:bg-red-200', '完全重置（清空所有数据）'],
+            ].map(([fn, Icon, cls, label]) => (React.createElement("button", { key: label, onClick: fn, className: `w-full flex items-center gap-2 px-4 py-3 rounded-2xl font-bold text-left transition ${cls}` },
+                React.createElement(Icon, { size: 18 }),
+                label))))),
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 text-sm text-gray-600 space-y-1" },
+            React.createElement("p", { className: "font-black text-gray-800 text-lg mb-2" }, "\u2139\uFE0F \u5173\u4E8E"),
+            React.createElement("p", null,
+                "\u5F53\u524D UID\uFF1A",
+                React.createElement("span", { className: "font-mono" }, config.mid)),
+            React.createElement("p", null,
+                "\u5DF2\u52A0\u8F7D\u6536\u85CF\u5939\uFF1A",
+                ((_a = config.folders) === null || _a === void 0 ? void 0 : _a.length) || 0,
+                " \u4E2A \u00B7 \u89C6\u9891\u603B\u6570\uFF1A",
+                videos.length),
+            React.createElement("p", { className: "text-xs text-gray-500 pt-1" }, "\u6570\u636E\u4FDD\u5B58\u5728\u6D4F\u89C8\u5668\u672C\u5730\uFF08localStorage\uFF09\uFF0C\u6BCF\u4E2A\u4EBA\u7684\u6D4F\u89C8\u5668\u5404\u81EA\u72EC\u7ACB\u3002"))));
+}
+// ── 拖拽评级（夯→拉），结果存入 ov[bvid].rating，随 overrides 持久化 ──
+const TIERS = [
+    { key: 'hong', label: '夯', sub: '封神', cls: 'from-rose-500 to-red-500', tint: '#fff1f2' },
+    { key: 'ding', label: '顶级', sub: '天花板', cls: 'from-amber-400 to-orange-400', tint: '#fffbeb' },
+    { key: 'rsr', label: '人上人', sub: '高人一等', cls: 'from-yellow-300 to-amber-300', tint: '#fefce8' },
+    { key: 'npc', label: 'NPC', sub: '路人甲', cls: 'from-sky-400 to-blue-400', tint: '#f0f9ff' },
+    { key: 'la', label: '拉完了', sub: '拉垮', cls: 'from-gray-400 to-gray-500', tint: '#f9fafb' },
+];
+const TIER_LABEL = { hong: '夯', ding: '顶级', rsr: '人上人', npc: 'NPC', la: '拉完了' };
+function RankChip({ v, dim, onDown }) {
+    return (React.createElement("div", { onPointerDown: e => onDown(e, v), title: v.title, style: { width: '7rem', touchAction: 'none', cursor: 'grab', opacity: dim ? 0.3 : 1, userSelect: 'none', WebkitUserSelect: 'none' }, className: "flex-shrink-0 bg-white rounded-xl shadow overflow-hidden transition-transform" },
+        React.createElement("div", { className: "relative" },
+            React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", draggable: "false", className: "w-full h-16 object-cover bg-gray-100", onError: e => { e.target.style.opacity = '0.15'; } }),
+            React.createElement("div", { className: "absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded font-mono" }, fmtDur(v.duration))),
+        React.createElement("div", { className: "px-1.5 py-1 text-xs font-bold text-gray-700 line-clamp-2 leading-snug", style: { minHeight: '2.5rem' } }, v.title)));
+}
+function RankView({ videos, ov, setRating }) {
+    const watched = useMemo(() => videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched; }), [videos, ov]);
+    const byTier = k => watched.filter(v => { var _a; return (((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.rating) || null) === k; });
+    const pool = watched.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.rating); });
+    const [drag, setDrag] = useState(null);
+    const [hover, setHover] = useState(null);
+    const posRef = useRef({ x: 0, y: 0 });
+    function onDown(e, v) {
+        e.preventDefault();
+        const x = e.clientX, y = e.clientY;
+        posRef.current = { x, y };
+        setDrag({ bvid: v.bvid, video: v, x, y });
+    }
+    useEffect(() => {
+        if (!drag)
+            return;
+        const zoneAt = (x, y) => { const el = document.elementFromPoint(x, y); const z = el && el.closest('[data-tier]'); return z ? z.getAttribute('data-tier') : null; };
+        const move = e => { const x = e.clientX, y = e.clientY; posRef.current = { x, y }; setDrag(d => d ? { ...d, x, y } : d); setHover(zoneAt(x, y)); };
+        const end = () => { const { x, y } = posRef.current; const t = zoneAt(x, y); if (t)
+            setRating(drag.bvid, t === 'pool' ? null : t); setDrag(null); setHover(null); };
+        window.addEventListener('pointermove', move);
+        window.addEventListener('pointerup', end);
+        window.addEventListener('pointercancel', end);
+        return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end); };
+    }, [drag === null || drag === void 0 ? void 0 : drag.bvid]);
+    if (!watched.length)
+        return React.createElement("div", { className: "bg-white rounded-3xl shadow p-12 text-center" },
+            React.createElement("div", { className: "text-6xl mb-3" }, "\uD83C\uDFC6"),
+            React.createElement("h3", { className: "text-xl font-black text-gray-800" }, "\u8FD8\u6CA1\u6709\u770B\u5B8C\u7684\u89C6\u9891"),
+            React.createElement("p", { className: "text-gray-600 mt-2" }, "\u5728\u89C6\u9891\u5361\u7247\u4E0A\u70B9\u300C\u6807\u8BB0\u5DF2\u770B\u300D\uFF0C\u770B\u5B8C\u7684\u89C6\u9891\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\uFF0C\u62D6\u8FDB\u5BF9\u5E94\u6863\u4F4D\u5373\u53EF\u8BC4\u7EA7\u3002"));
+    const ratedCount = watched.length - pool.length;
+    return (React.createElement("div", { className: "space-y-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+            React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1 flex items-center gap-2" },
+                React.createElement(Trophy, { className: "text-amber-500", size: 22 }),
+                " \u62D6\u62FD\u8BC4\u7EA7"),
+            React.createElement("p", { className: "text-sm text-gray-600" },
+                "\u628A\u4E0B\u9762\u300C\u5F85\u8BC4\u7EA7\u300D\u91CC\u7684\u89C6\u9891\u62D6\u5230\u5BF9\u5E94\u6863\u4F4D\uFF08\u592F \u2192 \u62C9\uFF09\u3002\u5DF2\u8BC4\u7EA7 ",
+                ratedCount,
+                " / ",
+                watched.length,
+                "\uFF0C\u8BC4\u7EA7\u81EA\u52A8\u4FDD\u5B58\u5728\u4F60\u6D4F\u89C8\u5668\u672C\u5730\u3002")),
+        React.createElement("div", { className: "space-y-3" }, TIERS.map(t => {
+            const items = byTier(t.key);
+            const active = hover === t.key;
+            return (React.createElement("div", { key: t.key, "data-tier": t.key, style: { backgroundColor: t.tint, outline: active ? '3px solid rgba(168,85,247,.6)' : 'none' }, className: "flex rounded-2xl overflow-hidden shadow transition-all" },
+                React.createElement("div", { className: `bg-gradient-to-br ${t.cls} flex flex-col items-center justify-center text-white flex-shrink-0 p-2 text-center`, style: { width: '4.75rem' } },
+                    React.createElement("span", { className: "font-black", style: { fontSize: t.label.length >= 3 ? '1rem' : t.label.length === 2 ? '1.25rem' : '1.875rem', lineHeight: 1.1 } }, t.label),
+                    React.createElement("span", { className: "text-xs font-bold opacity-90", style: { marginTop: '2px' } }, t.sub)),
+                React.createElement("div", { className: "flex-1 flex flex-wrap gap-2 p-3", style: { minHeight: '5.5rem' } },
+                    items.map(v => React.createElement(RankChip, { key: v.bvid, v: v, dim: (drag === null || drag === void 0 ? void 0 : drag.bvid) === v.bvid, onDown: onDown })),
+                    !items.length && React.createElement("span", { className: "text-sm text-gray-400 self-center" }, "\u62D6\u5230\u8FD9\u91CC\u2026"))));
+        })),
+        React.createElement("div", { "data-tier": "pool", style: { outline: hover === 'pool' ? '3px solid rgba(168,85,247,.6)' : 'none' }, className: "bg-white rounded-3xl shadow p-5 transition-all" },
+            React.createElement("div", { className: "flex items-center justify-between mb-3" },
+                React.createElement("h3", { className: "text-lg font-black text-gray-800" }, "\uD83D\uDCE5 \u5F85\u8BC4\u7EA7"),
+                React.createElement("span", { className: "text-sm font-bold text-gray-500" },
+                    pool.length,
+                    " \u4E2A")),
+            React.createElement("div", { className: "flex flex-wrap gap-2", style: { minHeight: '5rem' } },
+                pool.map(v => React.createElement(RankChip, { key: v.bvid, v: v, dim: (drag === null || drag === void 0 ? void 0 : drag.bvid) === v.bvid, onDown: onDown })),
+                !pool.length && React.createElement("span", { className: "text-sm text-gray-400 self-center" }, "\u5168\u90E8\u770B\u5B8C\u7684\u89C6\u9891\u90FD\u8BC4\u7EA7\u597D\u5566 \uD83C\uDF89\uFF08\u62D6\u56DE\u8FD9\u91CC\u53EF\u53D6\u6D88\u8BC4\u7EA7\uFF09"))),
+        drag && React.createElement("div", { style: { position: 'fixed', left: drag.x, top: drag.y, transform: 'translate(-50%,-50%) rotate(-3deg)', pointerEvents: 'none', zIndex: 50, width: '7rem', opacity: 0.95 } },
+            React.createElement("div", { className: "bg-white rounded-xl shadow-xl overflow-hidden" },
+                React.createElement("img", { src: drag.video.cover, alt: "", referrerPolicy: "no-referrer", className: "w-full h-16 object-cover bg-gray-100" }),
+                React.createElement("div", { className: "px-1.5 py-1 text-xs font-bold text-gray-700 line-clamp-2 leading-snug" }, drag.video.title)))));
+}
+// ── Main App ────────────────────────────────────────────────
+function App() {
+    const [config, setConfig] = useState(null);
+    const [videos, setVideos] = useState([]);
+    const [ov, setOv] = useState({});
+    const [view, setView] = useState('library');
+    const [loading, setLoading] = useState(null);
+    const [error, setError] = useState(null);
+    const [picker, setPicker] = useState(null);
+    const [loaded, setLoaded] = useState(false);
+    const [midInput, setMidInput] = useState('');
+    useEffect(() => {
+        try {
+            const c = LS.get(STORE.config);
+            if (c)
+                setConfig(JSON.parse(c.value));
+        }
+        catch { }
+        try {
+            const v = LS.get(STORE.videos);
+            if (v)
+                setVideos(JSON.parse(v.value));
+        }
+        catch { }
+        try {
+            const o = LS.get(STORE.overrides);
+            if (o)
+                setOv(JSON.parse(o.value));
+        }
+        catch { }
+        setLoaded(true);
+    }, []);
+    useEffect(() => { if (loaded && config)
+        LS.set(STORE.config, JSON.stringify(config)); }, [config, loaded]);
+    useEffect(() => { if (loaded)
+        LS.set(STORE.videos, JSON.stringify(videos)); }, [videos, loaded]);
+    useEffect(() => { if (loaded)
+        LS.set(STORE.overrides, JSON.stringify(ov)); }, [ov, loaded]);
+    const wl = useMemo(() => new Set((config === null || config === void 0 ? void 0 : config.whitelist) || []), [config]);
+    async function loadFolders(mid) {
+        setError(null);
+        setLoading({ msg: '获取收藏夹列表...', cur: 0, tot: 1 });
+        try {
+            const d = await biliFetch(`https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=${mid}&web_location=333.1387`);
+            setLoading(null);
+            const folders = (d.list || []).map(f => ({ id: f.id, title: f.title, count: f.media_count }));
+            if (!folders.length) {
+                setError('没有找到公开收藏夹。请检查 UID 是否正确，或把收藏夹设为公开。');
+                return;
+            }
+            setPicker({ mid, folders, selected: new Set(folders.map(f => f.id)) });
+        }
+        catch (e) {
+            setLoading(null);
+            setError('加载失败：' + e.message);
+        }
+    }
+    async function loadVideos(mid, selectedFolders) {
+        var _a, _b;
+        setError(null);
+        setPicker(null);
+        const all = [], seen = new Set();
+        let tot = selectedFolders.reduce((s, f) => s + Math.ceil((f.count || 20) / 20), 0), cur = 0;
+        try {
+            for (const folder of selectedFolders) {
+                let pn = 1, hasMore = true;
+                while (hasMore) {
+                    setLoading({ msg: `加载「${folder.title}」第 ${pn} 页...`, cur, tot });
+                    const d = await biliFetch(`https://api.bilibili.com/x/v3/fav/resource/list?media_id=${folder.id}&pn=${pn}&ps=20&platform=web&keyword=&order=mtime`);
+                    for (const m of (d.medias || [])) {
+                        if (m.type !== 2)
+                            continue;
+                        const bvid = m.bv_id || m.bvid;
+                        if (!bvid || seen.has(bvid))
+                            continue;
+                        seen.add(bvid);
+                        all.push({ bvid, title: m.title || '', intro: m.intro || '', cover: m.cover || '', duration: m.duration || 0, up_name: ((_a = m.upper) === null || _a === void 0 ? void 0 : _a.name) || '未知', up_mid: ((_b = m.upper) === null || _b === void 0 ? void 0 : _b.mid) || 0, fav_time: m.fav_time || m.ctime || 0, tname: m.tname || '', folder_id: folder.id, folder_title: folder.title });
+                    }
+                    hasMore = d.has_more;
+                    cur++;
+                    pn++;
+                    await sleep(220);
+                }
+            }
+            setVideos(all);
+            setConfig({ ...(config || DEFAULT_CONFIG), mid, folders: selectedFolders });
+            setLoading(null);
+            setView('library');
+        }
+        catch (e) {
+            setLoading(null);
+            setError('加载视频失败：' + e.message);
+        }
+    }
+    const toggleStar = bvid => setOv(o => { var _a; return ({ ...o, [bvid]: { ...o[bvid], starred: !((_a = o[bvid]) === null || _a === void 0 ? void 0 : _a.starred) } }); });
+    const toggleWatched = bvid => setOv(o => { var _a; return ({ ...o, [bvid]: { ...o[bvid], watched: !((_a = o[bvid]) === null || _a === void 0 ? void 0 : _a.watched) } }); });
+    const setBucket = (bvid, bucket) => setOv(o => ({ ...o, [bvid]: { ...o[bvid], bucket } }));
+    const setRating = (bvid, rating) => setOv(o => ({ ...o, [bvid]: { ...o[bvid], rating } }));
+    function clearWatched() {
+        if (!confirm('要清空所有已看记录吗？'))
+            return;
+        setOv(o => { const n = {}; for (const [k, v] of Object.entries(o)) {
+            const { watched, ...rest } = v;
+            if (Object.keys(rest).length)
+                n[k] = rest;
+        } return n; });
+    }
+    function removeWatchedVideos() {
+        if (!confirm('要把已看视频彻底移除吗？'))
+            return;
+        setVideos(vs => vs.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched); }));
+        setOv(o => { const n = {}; for (const [k, v] of Object.entries(o)) {
+            if (!v.watched)
+                n[k] = v;
+        } return n; });
+    }
+    function fullReset() {
+        if (!confirm('要完全重置吗？所有数据都会清空。'))
+            return;
+        setConfig(null);
+        setVideos([]);
+        setOv({});
+        setView('library');
+        LS.del(STORE.config);
+        LS.del(STORE.videos);
+        LS.del(STORE.overrides);
+    }
+    if (!loaded)
+        return React.createElement("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100" },
+            React.createElement(Loader2, { className: "animate-spin text-pink-500", size: 32 }));
+    if (loading) {
+        const pct = loading.tot > 0 ? Math.min(100, Math.round(loading.cur / loading.tot * 100)) : 0;
+        return React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
+            React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-10 max-w-md w-full text-center" },
+                React.createElement("div", { className: "inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 mb-6" },
+                    React.createElement(Loader2, { className: "animate-spin text-white", size: 36 })),
+                React.createElement("h2", { className: "text-2xl font-black text-gray-800 mb-2" }, "\u6B63\u5728\u52A0\u8F7D"),
+                React.createElement("p", { className: "text-gray-600 mb-6" }, loading.msg),
+                React.createElement("div", { className: "w-full bg-gray-200 rounded-full h-3 overflow-hidden" },
+                    React.createElement("div", { className: "h-full bg-gradient-to-r from-pink-400 to-purple-500 transition-all duration-300", style: { width: pct + '%' } })),
+                React.createElement("p", { className: "text-sm text-gray-500 mt-3" },
+                    loading.cur,
+                    " / ",
+                    loading.tot)));
+    }
+    if (picker)
+        return React.createElement(FolderPickerView, { picker: picker, setPicker: setPicker, onConfirm: (mid, sel) => loadVideos(mid, sel), onCancel: () => setPicker(null) });
+    if (!config || !videos.length)
+        return React.createElement(SetupView, { midInput: midInput, setMidInput: setMidInput, onSubmit: loadFolders, error: error });
+    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100" },
+        React.createElement("header", { className: "bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10" },
+            React.createElement("div", { className: "max-w-6xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3" },
+                React.createElement("h1", { className: "text-2xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent flex items-center gap-2" },
+                    React.createElement("span", { className: "text-3xl" }, "\uD83D\uDCFA"),
+                    " B\u7AD9\u6536\u85CF\u6574\u7406\u5668"),
+                React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-1" },
+                    React.createElement(TabBtn, { active: view === 'library', onClick: () => setView('library'), icon: Library }, "\u5168\u90E8"),
+                    React.createElement(TabBtn, { active: view === 'today', onClick: () => setView('today'), icon: Calendar }, "\u6BCF\u65E5\u6E05\u5355"),
+                    React.createElement(TabBtn, { active: view === 'highlights', onClick: () => setView('highlights'), icon: Sparkles }, "\u7CBE\u534E"),
+                    React.createElement(TabBtn, { active: view === 'rank', onClick: () => setView('rank'), icon: Trophy }, "\u8BC4\u7EA7"),
+                    React.createElement(TabBtn, { active: view === 'settings', onClick: () => setView('settings'), icon: Settings }, "\u8BBE\u7F6E")))),
+        React.createElement("main", { className: "max-w-6xl mx-auto px-4 py-6" },
+            view === 'library' && React.createElement(LibraryView, { videos: videos, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched, setBucket: setBucket }),
+            view === 'today' && React.createElement(TodayView, { videos: videos, ov: ov, wl: wl, config: config, toggleStar: toggleStar, toggleWatched: toggleWatched }),
+            view === 'highlights' && React.createElement(HighlightsView, { videos: videos, ov: ov, wl: wl, toggleStar: toggleStar, toggleWatched: toggleWatched }),
+            view === 'rank' && React.createElement(RankView, { videos: videos, ov: ov, setRating: setRating }),
+            view === 'settings' && React.createElement(SettingsView, { config: config, setConfig: setConfig, videos: videos, onReloadFolders: () => loadFolders(config.mid), clearWatched: clearWatched, removeWatchedVideos: removeWatchedVideos, fullReset: fullReset }))));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App, null));
+</script>
+</body>
+</html>
