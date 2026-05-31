@@ -30,6 +30,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .bg-amber-50{background-color:#fffbeb}
 .bg-black\/30{background-color:rgba(0, 0, 0, 0.3)}
 .bg-black\/70{background-color:rgba(0, 0, 0, 0.7)}
+.bg-blue-50{background-color:#eff6ff}
 .bg-clip-text{-webkit-background-clip:text;background-clip:text}
 .bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}
 .bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}
@@ -41,6 +42,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .bg-purple-100{background-color:#f3e8ff}
 .bg-purple-50{background-color:#faf5ff}
 .bg-purple-500{background-color:#a855f7}
+.bg-pink-50{background-color:#fdf2f8}
 .bg-red-50{background-color:#fef2f2}
 .bg-white{background-color:#fff}
 .bg-white\/80{background-color:rgba(255, 255, 255, 0.8)}
@@ -207,7 +209,9 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .text-indigo-700{color:#4338ca}
 .text-left{text-align:left}
 .text-lg{font-size:1.125rem;line-height:1.75rem}
+.text-blue-600{color:#2563eb}
 .text-pink-500{color:#ec4899}
+.text-pink-600{color:#db2777}
 .text-purple-500{color:#a855f7}
 .text-purple-600{color:#9333ea}
 .text-purple-700{color:#7e22ce}
@@ -308,7 +312,23 @@ const LS = {
 };
 const STORE = { config: 'biliFav:config', videos: 'biliFav:videos', overrides: 'biliFav:overrides' };
 const DEFAULT_CONFIG = { mid: '', folders: [], whitelist: [], listenTarget: 7200, watchTarget: 3600 };
-const LISTEN_KW = ['访谈', '对话', '专访', '杂谈', '闲聊', '聊聊', '唠嗑', '漫谈', '播客', '电台', 'podcast', '演讲', '圆桌', '谈话', '分享会', '对谈', '聊天', '闲谈', '畅聊'];
+const LISTEN_KEYWORDS = ['访谈', '对话', '专访', '杂谈', '闲聊', '聊聊', '唠嗑', '漫谈', '播客', '电台', 'podcast', '演讲', '圆桌', '谈话', '分享会', '对谈', '聊天', '闲谈', '畅聊'];
+const LISTEN_TNAME_KEYWORDS = ['演讲', '访谈', '播客', '脱口秀'];
+const TOPIC_RULES = [
+    { key: 'dev', label: '编程开发', keywords: ['编程', '代码', '程序员', '前端', '后端', '全栈', 'javascript', 'typescript', 'python', 'react', 'vue', 'node', '数据库', '算法'] },
+    { key: 'ai-tech', label: 'AI/科技', keywords: ['ai', '人工智能', '大模型', 'chatgpt', 'openai', '机器学习', '深度学习', '科技', '数码', '硬件', '芯片'] },
+    { key: 'game', label: '游戏', keywords: ['游戏', '主机', 'steam', '任天堂', '原神', '王者', '英雄联盟', 'lol', '单机', '攻略', '实况'] },
+    { key: 'learn', label: '学习教程', keywords: ['教程', '入门', '课程', '公开课', '学习', '指南', '教学', '从零', '训练营', '知识'] },
+    { key: 'career', label: '职场商业', keywords: ['职场', '商业', '创业', '管理', '产品经理', '面试', '简历', '副业', '商业模式', '公司'] },
+    { key: 'life', label: '生活经验', keywords: ['生活', '旅行', '家居', '做饭', '美食', '健身', '心理', '读书', '经验', 'vlog'] },
+    { key: 'media', label: '影视音乐', keywords: ['电影', '影视', '音乐', '乐评', '影评', '纪录片', '动画', '番剧', '剪辑', '解说'] },
+];
+const DURATION_BUCKETS = [
+    { key: 'short', label: '短视频', max: 10 * 60 },
+    { key: 'medium', label: '中等', max: 30 * 60 },
+    { key: 'long', label: '长视频', max: 90 * 60 },
+    { key: 'extra-long', label: '超长', max: Infinity },
+];
 const PROXIES = [
     u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
     u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
@@ -402,17 +422,22 @@ const fmtDur = s => { if (!s)
     return '0:00'; const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sc = s % 60; return h ? `${h}:${String(m).padStart(2, '0')}:${String(sc).padStart(2, '0')}` : `${m}:${String(sc).padStart(2, '0')}`; };
 const fmtDurChn = s => { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h && m ? `${h}小时${m}分` : h ? `${h}小时` : `${m}分钟`; };
 const fmtDate = ts => { const d = new Date(ts * 1000); return `${d.getMonth() + 1}/${d.getDate()}`; };
+const normalizeText = value => String(value || '').toLowerCase();
+const getSearchText = v => [v.title, v.intro, v.tname, v.up_name].filter(Boolean).join(' ').toLowerCase();
+const hasKeyword = (text, keywords) => keywords.some(k => text.includes(normalizeText(k)));
 function autoBucket(v, wl) {
     if (wl.has(v.up_mid))
         return 'listen';
-    const t = (v.title + ' ' + (v.intro || '')).toLowerCase();
-    if (LISTEN_KW.some(k => t.includes(k.toLowerCase())))
+    const t = getSearchText(v);
+    if (hasKeyword(t, LISTEN_KEYWORDS))
         return 'listen';
-    const tn = (v.tname || '').toLowerCase();
-    if (tn.includes('演讲') || tn.includes('访谈') || tn.includes('播客') || tn.includes('脱口秀'))
+    const tn = normalizeText(v.tname);
+    if (hasKeyword(tn, LISTEN_TNAME_KEYWORDS))
         return 'listen';
     return 'watch';
 }
+const classifyTopic = v => TOPIC_RULES.find(rule => hasKeyword(getSearchText(v), rule.keywords)) || { key: 'other', label: '其他主题', keywords: [] };
+const classifyDuration = v => DURATION_BUCKETS.find(rule => (Number(v.duration) || 0) <= rule.max) || DURATION_BUCKETS[DURATION_BUCKETS.length - 1];
 const getBucket = (v, ov, wl) => { var _a; return ((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.bucket) || autoBucket(v, wl); };
 function buildDays(videos, ov, wl, lSec, wSec) {
     var _a;
@@ -471,6 +496,7 @@ function ChipBtn({ active, onClick, children }) {
 }
 function VideoCard({ v, ov, wl, toggleStar, toggleWatched, setBucket, showSwitch }) {
     const o = ov[v.bvid] || {}, bucket = getBucket(v, ov, wl);
+    const topic = classifyTopic(v), durationBucket = classifyDuration(v);
     return (React.createElement("div", { className: `bg-white rounded-2xl shadow hover:shadow-lg transition-all p-3 flex gap-3 sm:gap-2 sm:p-2 ${o.watched ? 'opacity-60' : ''}` },
         React.createElement("a", { href: `https://www.bilibili.com/video/${v.bvid}`, target: "_blank", rel: "noreferrer", className: "flex-shrink-0 relative group" },
             React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", className: "w-32 h-20 object-cover rounded-xl bg-gray-100 sm:w-28 sm:h-16", loading: "lazy", onError: e => { e.target.style.opacity = '0.15'; } }),
@@ -482,6 +508,8 @@ function VideoCard({ v, ov, wl, toggleStar, toggleWatched, setBucket, showSwitch
             React.createElement("div", { className: "flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 mt-1" },
                 React.createElement("span", { className: "font-medium text-gray-600" }, v.up_name),
                 v.tname && React.createElement("span", { className: "px-1.5 py-0.5 bg-gray-100 rounded" }, v.tname),
+                React.createElement("span", { className: "px-1.5 py-0.5 bg-pink-50 text-pink-600 rounded font-bold" }, topic.label),
+                React.createElement("span", { className: "px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded font-bold" }, durationBucket.label),
                 React.createElement("span", null,
                     "\u6536\u85CF\u4E8E ",
                     fmtDate(v.fav_time)),
@@ -553,7 +581,7 @@ function FolderPickerView({ picker, setPicker, onConfirm, onCancel }) {
                     sel.length ? `(${sel.reduce((s, f) => s + f.count, 0)} 个视频)` : '')))));
 }
 function LibraryView({ videos, ov, wl, toggleStar, toggleWatched, setBucket }) {
-    const [bf, setBf] = useState('all'), [upF, setUpF] = useState(''), [q, setQ] = useState(''), [sort, setSort] = useState('fav_desc'), [hideW, setHideW] = useState(true);
+    const [bf, setBf] = useState('all'), [upF, setUpF] = useState(''), [topicF, setTopicF] = useState(''), [durationF, setDurationF] = useState(''), [q, setQ] = useState(''), [sort, setSort] = useState('fav_desc'), [hideW, setHideW] = useState(true);
     const ups = useMemo(() => { var _a; const m = new Map(); for (const v of videos)
         m.set(v.up_mid, { mid: v.up_mid, name: v.up_name, count: (((_a = m.get(v.up_mid)) === null || _a === void 0 ? void 0 : _a.count) || 0) + 1 }); return [...m.values()].sort((a, b) => b.count - a.count); }, [videos]);
     const filtered = useMemo(() => {
@@ -564,13 +592,17 @@ function LibraryView({ videos, ov, wl, toggleStar, toggleWatched, setBucket }) {
             r = r.filter(v => getBucket(v, ov, wl) === bf);
         if (upF)
             r = r.filter(v => v.up_mid == upF);
+        if (topicF)
+            r = r.filter(v => classifyTopic(v).key === topicF);
+        if (durationF)
+            r = r.filter(v => classifyDuration(v).key === durationF);
         if (q) {
             const s = q.toLowerCase();
-            r = r.filter(v => v.title.toLowerCase().includes(s) || v.up_name.toLowerCase().includes(s) || (v.tname || '').toLowerCase().includes(s));
+            r = r.filter(v => getSearchText(v).includes(s) || classifyTopic(v).label.toLowerCase().includes(s) || classifyDuration(v).label.toLowerCase().includes(s));
         }
         const S = { fav_desc: (a, b) => b.fav_time - a.fav_time, fav_asc: (a, b) => a.fav_time - b.fav_time, dur_desc: (a, b) => b.duration - a.duration, dur_asc: (a, b) => a.duration - b.duration, title: (a, b) => a.title.localeCompare(b.title, 'zh') };
         return [...r].sort(S[sort]);
-    }, [videos, ov, wl, bf, upF, q, sort, hideW]);
+    }, [videos, ov, wl, bf, upF, topicF, durationF, q, sort, hideW]);
     const st = useMemo(() => ({ total: videos.length, watched: videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched; }).length, starred: videos.filter(v => { var _a; return (_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.starred; }).length, listen: videos.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched) && getBucket(v, ov, wl) === 'listen'; }).length, watch: videos.filter(v => { var _a; return !((_a = ov[v.bvid]) === null || _a === void 0 ? void 0 : _a.watched) && getBucket(v, ov, wl) === 'watch'; }).length }), [videos, ov, wl]);
     return (React.createElement("div", null,
         React.createElement("div", { className: "grid grid-cols-2 md:grid-cols-5 gap-3 mb-5" },
@@ -595,6 +627,13 @@ function LibraryView({ videos, ov, wl, toggleStar, toggleWatched, setBucket }) {
                         " (",
                         u.count,
                         ")"))),
+                React.createElement("select", { value: topicF, onChange: e => setTopicF(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
+                    React.createElement("option", { value: "" }, "所有主题"),
+                    TOPIC_RULES.map(t => React.createElement("option", { key: t.key, value: t.key }, t.label)),
+                    React.createElement("option", { value: "other" }, "其他主题")),
+                React.createElement("select", { value: durationF, onChange: e => setDurationF(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
+                    React.createElement("option", { value: "" }, "所有时长"),
+                    DURATION_BUCKETS.map(d => React.createElement("option", { key: d.key, value: d.key }, d.label))),
                 React.createElement("select", { value: sort, onChange: e => setSort(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
                     React.createElement("option", { value: "fav_desc" }, "\u6536\u85CF\uFF1A\u6700\u65B0"),
                     React.createElement("option", { value: "fav_asc" }, "\u6536\u85CF\uFF1A\u6700\u65E9"),

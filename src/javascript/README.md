@@ -4,16 +4,16 @@
 
 ## 总览
 
-`bili-fav-fast.html` 的 JS 代码（L289-L978）按文件内顺序分为以下逻辑区块：
+`bili-fav-fast.html` 的 JS 代码（L294-L1016）按文件内顺序分为以下逻辑区块：
 
 | 区块 | 文件 | 行号 | 内容 |
 |------|------|------|------|
-| 核心库 | [lib.md](lib.md) | L290-318 | React hooks、localStorage 适配器、常量、代理列表 |
-| 图标 | [icons.md](icons.md) | L320-369 | 11 个 SVG React 图标组件 |
-| 工具函数 | [utils.md](utils.md) | L370-455 | API 请求、格式化、自动分类、每日清单构建 |
-| 组件 | [components.md](components.md) | L456-499 | 共享 UI 组件（TabBtn, StatCard, VideoCard 等） |
-| 视图 | [views.md](views.md) | L500-808 | 7 个页面级视图组件 |
-| 应用入口 | — | L810-978 | App 组件、状态管理、事件处理、ReactDOM 入口 |
+| 核心库 | [lib.md](lib.md) | L294-L337 | React hooks、localStorage 适配器、常量、代理列表、分类规则 |
+| 图标 | [icons.md](icons.md) | L338-L388 | 11 个 SVG React 图标组件 |
+| 工具函数 | [utils.md](utils.md) | L390-L480 | API 请求、格式化、自动分类、主题/时长分类、每日清单构建 |
+| 组件 | [components.md](components.md) | L482-L526 | 共享 UI 组件（TabBtn, StatCard, VideoCard 等） |
+| 视图 | [views.md](views.md) | L528-L847 | 7 个页面级视图组件 |
+| 应用入口 | — | L849-L1016 | App 组件、状态管理、事件处理、ReactDOM 入口 |
 
 ## 构建说明
 
@@ -26,3 +26,4 @@
 - 使用 `React.createElement()` API（无 JSX），保持无构建依赖
 - 所有组件写作纯函数形式，使用 `useState`、`useEffect`、`useMemo`、`useRef`
 - 命名以业务含义为导向（`buildDays`、`autoBucket`、`toggleWatched`、`setRating`）
+- 分类规则集中放在 `classifiers/classification-rules.js`，页面内嵌同等逻辑以保持单文件可运行

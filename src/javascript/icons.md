@@ -1,12 +1,12 @@
 # SVG 图标（Icons）
 
-**文件位置：** `bili-fav-fast.html` L320-L369
+**文件位置：** `bili-fav-fast.html` L338-L388
 
 ## 实现方式
 
 所有图标是手写的 Lucide 风格 SVG React 组件，使用 `React.createElement` 构建。
 
-### 基础组件 (L320)
+### 基础组件 (L338)
 
 ```js
 const Ic = ({ s = 16, c = '', ch }) => React.createElement("svg", ...);
@@ -18,23 +18,23 @@ const Ic = ({ s = 16, c = '', ch }) => React.createElement("svg", ...);
 
 | 组件名 | 行号 | 用途 |
 |--------|------|------|
-| `Star` | L321 | 加精/星标 |
-| `Trophy` | L322-328 | 评级页奖杯 |
-| `Eye` | L329-331 | 观看/标记已看 |
-| `RefreshCw` | L332-335 | 重新加载/刷新 |
-| `Settings` | L336-338 | 设置页 |
-| `Library` | L339-341 | 全部视频库 |
-| `Calendar` | L342-346 | 每日清单 |
-| `Sparkles` | L347 | 精华页面 |
-| `Loader2` | L348 | 加载动画 |
-| `ExternalLink` | L349-352 | 视频外链跳转 |
-| `Search` | L353-355 | 搜索 |
-| `Check` | L356 | 勾选/完成 |
-| `AlertCircle` | L357-360 | 错误警告 |
-| `ChevronRight` | L361 | 右箭头 |
-| `Trash2` | L362-364 | 删除 |
-| `FolderOpen` | L365 | 收藏夹选择器 |
-| `Car` | L366-369 | "开车听"汽车图标 |
+| `Star` | L339 | 加精/星标 |
+| `Trophy` | L340-L346 | 评级页奖杯 |
+| `Eye` | L347-L349 | 观看/标记已看 |
+| `RefreshCw` | L350-L353 | 重新加载/刷新 |
+| `Settings` | L354-L356 | 设置页 |
+| `Library` | L357-L359 | 全部视频库 |
+| `Calendar` | L360-L364 | 每日清单 |
+| `Sparkles` | L365 | 精华页面 |
+| `Loader2` | L366 | 加载动画 |
+| `ExternalLink` | L367-L370 | 视频外链跳转 |
+| `Search` | L371-L373 | 搜索 |
+| `Check` | L374 | 勾选/完成 |
+| `AlertCircle` | L375-L378 | 错误警告 |
+| `ChevronRight` | L379 | 右箭头 |
+| `Trash2` | L380-L382 | 删除 |
+| `FolderOpen` | L383 | 收藏夹选择器 |
+| `Car` | L384-L388 | "开车听"汽车图标 |
 
 ## 使用方式
 
