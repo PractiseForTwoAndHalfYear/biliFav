@@ -5,15 +5,18 @@
 ## 项目概况
 
 - 项目名称：`biliFav`，用于输入 B 站 UID 后整理收藏视频，辅助分类、标记、每日观看/收听计划和评级。
-- 当前项目形态：单文件前端原型 + 项目搭建说明 + 全栈架构文档。
-- 当前没有 `package.json`、真实 `src/` 目录、构建工具、测试框架或 Git 仓库元数据。不要假设存在 `npm test`、`npm run build`、Vite 工程、后端服务或远端仓库。
+- 当前项目形态：单文件前端原型 + 代码逻辑地图（src/）+ 架构文档（docs/）。
+- 当前没有 `package.json`、构建工具、测试框架或后端服务。不要假设存在 `npm test`、`npm run build`、Vite 工程、后端服务或远端仓库。
+- `src/` 目录是逻辑地图（非可执行代码），每个 `.md` 文件标注了 `bili-fav-fast.html` 中对应功能块的行号范围。
 - 当前目录下的主要文件：
+  - `CLAUDE.md`：项目规范、目录映射、技术栈说明、修改规则。
   - `README.md`：项目简介。
-  - `bili-fav-html.html`：基础单文件 React 原型，依赖 CDN、Babel 和 Tailwind CDN。
-  - `bili-fav-fast.html`：当前更完整的单文件版本，内置样式和图标，包含“评级”视图。优化当前可用页面时优先以此文件为主版本。
-  - `bili-fav-vite.md`：迁移到 React + Vite + Tailwind 的搭建说明。
-  - `bili-fav-skeleton.md`：最小可跑全栈骨架说明，包含 Express + TypeScript + Prisma + PostgreSQL + JWT。
-  - `bili-fav-fullstack.md`：完整全栈架构设计说明。
+  - `bili-fav-fast.html`：当前更完整的单文件版本，内置样式和图标，包含”评级”视图。优化当前可用页面时优先以此文件为主版本。**这是唯一可运行的产品文件。**
+  - `docs/vite-migration.md`：迁移到 React + Vite + Tailwind 的搭建说明。
+  - `docs/fullstack-skeleton.md`：最小可跑全栈骨架说明，包含 Express + TypeScript + Prisma + PostgreSQL + JWT。
+  - `docs/fullstack-architecture.md`：完整全栈架构设计说明。
+  - `archive/bili-fav-html.html`：基础单文件 React 原型（旧版归档）。
+  - `AGENTS.md`：本文件——AI 助手项目级工作规则。
 - 本项目当前适合直接双击 HTML 预览；如果浏览器安全策略、CDN 加载或后续跨文件加载需要本地服务，再使用简单静态服务。
 - 后续如果用户要求“落地真实工程”，优先从 `bili-fav-skeleton.md` 的最小骨架开始，不直接跳到复杂全栈版本。
 
@@ -163,7 +166,7 @@ python -m http.server 8000
 
 ## 修改流程
 
-1. 先阅读本文件、相关 HTML/Markdown 和用户需求，不凭印象改。
+1. 先阅读本文件、`CLAUDE.md`、相关 HTML/Markdown 和用户需求，不凭印象改。
 2. 判断当前任务是“复盘规划”还是“执行修改”。
 3. 找到最小改动范围，保持现有页面风格和项目结构。
 4. 修改前说明即将改哪些文件。
@@ -177,8 +180,10 @@ python -m http.server 8000
 - 不把当前项目迁移到 React 工程、Vite、Tailwind 构建链、TypeScript 或全栈架构，除非用户明确要求。
 - 不把单文件原型拆成复杂工程结构，除非复用和维护收益非常明确，且用户同意。
 - 不引入真实业务密钥、真实用户数据、浏览器 Cookie 或不可公开素材。
-- 不在未验证时声称“已修复”“已完成”“测试通过”。
+- 不在未验证时声称”已修复””已完成””测试通过”。
 - 不覆盖用户已有改动，不擅自格式化无关文件。
 - 不把中文需求改写成只有英文的文档或界面。
 - 不清空 `biliFav:config`、`biliFav:videos`、`biliFav:overrides` 等本地数据，除非用户明确要求。
+- 不删除或修改 `src/` 目录下的行号映射文件而不更新 `CLAUDE.md` 中的相应记录。
+- 不在更新 `bili-fav-fast.html` 后不同步更新 `src/` 中对应的行号映射文件。
 
