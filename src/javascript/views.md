@@ -1,8 +1,8 @@
 # 视图组件（Views）
 
-**文件位置：** `bili-fav-fast.html` L471-L779
+**文件位置：** `bili-fav-fast.html` L500-L808
 
-## SetupView (L471-498)
+## SetupView (L500-527)
 
 首页展示组件。
 
@@ -11,7 +11,7 @@
 - 支持 Enter 键提交
 - 底部显示错误提示（如果有）
 
-## FolderPickerView (L499-525)
+## FolderPickerView (L528-554)
 
 收藏夹选择器。
 
@@ -20,7 +20,7 @@
 - 显示"开始加载 N 个视频"按钮
 - 支持取消返回
 
-## LibraryView (L526-587)
+## LibraryView (L555-616)
 
 全部视频库——主浏览页面。
 
@@ -33,7 +33,7 @@
 - "隐藏已看"开关
 - 视频卡片列表（使用 `VideoCard` 组件）
 
-## TodayView (L588-628)
+## TodayView (L617-657)
 
 每日清单页面。
 
@@ -42,14 +42,14 @@
 - 每天分"开车听"和"专注看"两个区域
 - 显示每天的时长和视频数量
 
-## HighlightsView (L629-644)
+## HighlightsView (L658-673)
 
 精华回看页面。
 
 - 展示所有已加精视频，按收藏时间倒序
 - 没有精华时显示空状态提示
 
-## SettingsView (L645-696)
+## SettingsView (L674-725)
 
 设置页面。
 
@@ -63,7 +63,7 @@
    - 完全重置（清空所有数据）
 4. 关于信息（当前 UID、收藏夹数、视频总数）
 
-## RankView (L698-779)
+## RankView (L727-808)
 
 拖拽评级页面。
 
@@ -87,10 +87,10 @@
 
 ## 组件清单
 
-- [SetupView](bili-fav-fast.html#L471)
-- [FolderPickerView](bili-fav-fast.html#L499)
-- [LibraryView](bili-fav-fast.html#L526)
-- [TodayView](bili-fav-fast.html#L588)
-- [HighlightsView](bili-fav-fast.html#L629)
-- [SettingsView](bili-fav-fast.html#L645)
-- [RankView](bili-fav-fast.html#L698)
+- [SetupView](bili-fav-fast.html#L500)
+- [FolderPickerView](bili-fav-fast.html#L528)
+- [LibraryView](bili-fav-fast.html#L555)
+- [TodayView](bili-fav-fast.html#L617)
+- [HighlightsView](bili-fav-fast.html#L658)
+- [SettingsView](bili-fav-fast.html#L674)
+- [RankView](bili-fav-fast.html#L727)

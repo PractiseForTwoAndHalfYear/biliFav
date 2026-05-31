@@ -252,6 +252,35 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .to-amber-300{--tw-gradient-to:#fcd34d}
 .from-sky-400{--tw-gradient-from:#38bdf8;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(56,189,248,0))}
 .to-blue-400{--tw-gradient-to:#60a5fa}
+
+/* ── Mobile responsive (max 639px) ── */
+@media (max-width:639px){
+.sm\:flex-col{flex-direction:column}
+.sm\:w-28{width:7rem}
+.sm\:h-16{height:4rem}
+.sm\:w-24{width:6rem}
+.sm\:h-14{height:3.5rem}
+.sm\:text-xl{font-size:1.25rem;line-height:1.75rem}
+.sm\:text-lg{font-size:1.125rem;line-height:1.75rem}
+.sm\:text-sm{font-size:0.875rem;line-height:1.25rem}
+.sm\:text-xs{font-size:0.75rem;line-height:1rem}
+.sm\:p-2{padding:0.5rem}
+.sm\:p-3{padding:0.75rem}
+.sm\:p-4{padding:1rem}
+.sm\:px-2{padding-left:0.5rem;padding-right:0.5rem}
+.sm\:px-3{padding-left:0.75rem;padding-right:0.75rem}
+.sm\:py-2{padding-top:0.5rem;padding-bottom:0.5rem}
+.sm\:py-3{padding-top:0.75rem;padding-bottom:0.75rem}
+.sm\:gap-1{gap:0.25rem}
+.sm\:gap-1\.5{gap:0.375rem}
+.sm\:gap-2{gap:0.5rem}
+.sm\:grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+.sm\:min-w-0{min-width:0}
+.sm\:w-full{width:100%}
+.sm\:justify-center{justify-content:center}
+.sm\:overflow-x-auto{overflow-x:auto}
+.sm\:rounded-2xl{border-radius:1rem}
+}
 </style>
 </head>
 <body>
@@ -442,9 +471,9 @@ function ChipBtn({ active, onClick, children }) {
 }
 function VideoCard({ v, ov, wl, toggleStar, toggleWatched, setBucket, showSwitch }) {
     const o = ov[v.bvid] || {}, bucket = getBucket(v, ov, wl);
-    return (React.createElement("div", { className: `bg-white rounded-2xl shadow hover:shadow-lg transition-all p-3 flex gap-3 ${o.watched ? 'opacity-60' : ''}` },
+    return (React.createElement("div", { className: `bg-white rounded-2xl shadow hover:shadow-lg transition-all p-3 flex gap-3 sm:gap-2 sm:p-2 ${o.watched ? 'opacity-60' : ''}` },
         React.createElement("a", { href: `https://www.bilibili.com/video/${v.bvid}`, target: "_blank", rel: "noreferrer", className: "flex-shrink-0 relative group" },
-            React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", className: "w-32 h-20 object-cover rounded-xl bg-gray-100", loading: "lazy", onError: e => { e.target.style.opacity = '0.15'; } }),
+            React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", className: "w-32 h-20 object-cover rounded-xl bg-gray-100 sm:w-28 sm:h-16", loading: "lazy", onError: e => { e.target.style.opacity = '0.15'; } }),
             React.createElement("div", { className: "absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded font-mono" }, fmtDur(v.duration)),
             React.createElement("div", { className: "absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center" },
                 React.createElement(ExternalLink, { className: "text-white", size: 20 }))),
@@ -469,11 +498,11 @@ function VideoCard({ v, ov, wl, toggleStar, toggleWatched, setBucket, showSwitch
                     o.watched ? '已看' : '标记已看')))));
 }
 function SetupView({ midInput, setMidInput, onSubmit, error }) {
-    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
-        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full" },
-            React.createElement("div", { className: "text-center mb-6" },
-                React.createElement("div", { className: "text-6xl mb-3" }, "\uD83D\uDCFA\u2728"),
-                React.createElement("h1", { className: "text-3xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent mb-2" }, "B\u7AD9\u6536\u85CF\u6574\u7406\u5668"),
+    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6 sm:p-4" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full sm:p-5" },
+            React.createElement("div", { className: "text-center mb-6 sm:mb-4" },
+                React.createElement("div", { className: "text-6xl mb-3 sm:text-5xl sm:mb-2" }, "\uD83D\uDCFA\u2728"),
+                React.createElement("h1", { className: "text-3xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent mb-2 sm:text-2xl" }, "B\u7AD9\u6536\u85CF\u6574\u7406\u5668"),
                 React.createElement("p", { className: "text-gray-600" }, "\u628A\u4F60\u7684\u6536\u85CF\u81EA\u52A8\u5206\u7C7B\uFF0C\u6BCF\u5929\u7ED9\u4F60\u6392\u597D")),
             React.createElement("div", { className: "bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-5 text-sm" },
                 React.createElement("p", { className: "font-bold text-amber-900 mb-2" }, "\uD83D\uDCDD \u51C6\u5907\u5DE5\u4F5C"),
@@ -488,8 +517,8 @@ function SetupView({ midInput, setMidInput, onSubmit, error }) {
                     React.createElement("li", null, "\u628A\u8981\u5206\u7C7B\u7684\u6536\u85CF\u5939\u8BBE\u4E3A\"\u516C\u5F00\"\uFF08\u7BA1\u7406 \u2192 \u7F16\u8F91 \u2192 \u9690\u79C1\u8BBE\u7F6E\uFF09"))),
             React.createElement("label", { className: "block text-sm font-bold text-gray-700 mb-2" }, "\u4F60\u7684 B \u7AD9 UID"),
             React.createElement("div", { className: "flex gap-2" },
-                React.createElement("input", { type: "text", inputMode: "numeric", value: midInput, onChange: e => setMidInput(e.target.value.trim()), placeholder: "\u4F8B\u5982\uFF1A12345678", onKeyDown: e => e.key === 'Enter' && midInput && onSubmit(midInput), className: "flex-1 px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none text-lg font-mono" }),
-                React.createElement("button", { onClick: () => midInput && onSubmit(midInput), disabled: !midInput, className: "px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold disabled:opacity-40 hover:scale-105 transition-transform" },
+                React.createElement("input", { type: "text", inputMode: "numeric", value: midInput, onChange: e => setMidInput(e.target.value.trim()), placeholder: "\u4F8B\u5982\uFF1A12345678", onKeyDown: e => e.key === 'Enter' && midInput && onSubmit(midInput), className: "flex-1 px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-purple-400 focus:outline-none text-lg font-mono sm:px-3 sm:py-2 sm:text-base" }),
+                React.createElement("button", { onClick: () => midInput && onSubmit(midInput), disabled: !midInput, className: "px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold disabled:opacity-40 hover:scale-105 transition-transform sm:px-4 sm:py-2" },
                     "\u4E0B\u4E00\u6B65 ",
                     React.createElement(ChevronRight, { className: "inline", size: 18 }))),
             error && React.createElement("div", { className: "mt-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm flex gap-2" },
@@ -500,9 +529,9 @@ function FolderPickerView({ picker, setPicker, onConfirm, onCancel }) {
     const allIds = picker.folders.map(f => f.id);
     const toggle = id => { const s = new Set(picker.selected); s.has(id) ? s.delete(id) : s.add(id); setPicker({ ...picker, selected: s }); };
     const sel = picker.folders.filter(f => picker.selected.has(f.id));
-    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
-        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full" },
-            React.createElement("h2", { className: "text-2xl font-black text-gray-800 mb-2 flex items-center gap-2" },
+    return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6 sm:p-4" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full sm:p-5" },
+            React.createElement("h2", { className: "text-2xl font-black text-gray-800 mb-2 flex items-center gap-2 sm:text-xl" },
                 React.createElement(FolderOpen, { className: "text-purple-500", size: 24 }),
                 " \u9009\u62E9\u8981\u5206\u6790\u7684\u6536\u85CF\u5939"),
             React.createElement("div", { className: "flex items-center justify-between mb-4" },
@@ -550,13 +579,13 @@ function LibraryView({ videos, ov, wl, toggleStar, toggleWatched, setBucket }) {
             React.createElement(StatCard, { label: "\u4E13\u6CE8\u770B", value: st.watch, color: "from-indigo-400 to-blue-400", emoji: "\uD83D\uDC40" }),
             React.createElement(StatCard, { label: "\u5DF2\u770B", value: st.watched, color: "from-gray-400 to-gray-500", emoji: "\u2705" }),
             React.createElement(StatCard, { label: "\u7CBE\u534E", value: st.starred, color: "from-yellow-400 to-amber-400", emoji: "\u2B50" })),
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-4 mb-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-4 mb-5 sm:p-3 sm:mb-4" },
             React.createElement("div", { className: "flex flex-wrap gap-2 items-center" },
                 React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-1" },
                     React.createElement(ChipBtn, { active: bf === 'all', onClick: () => setBf('all') }, "\u5168\u90E8"),
                     React.createElement(ChipBtn, { active: bf === 'listen', onClick: () => setBf('listen') }, "\uD83D\uDE97 \u542C"),
                     React.createElement(ChipBtn, { active: bf === 'watch', onClick: () => setBf('watch') }, "\uD83D\uDC40 \u770B")),
-                React.createElement("div", { className: "flex-1 relative", style: { minWidth: '180px' } },
+                React.createElement("div", { className: "flex-1 relative", style: { minWidth: 'min(180px, 45vw)' } },
                     React.createElement(Search, { size: 16, className: "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" }),
                     React.createElement("input", { value: q, onChange: e => setQ(e.target.value), placeholder: "\u641C\u6807\u9898\u3001UP \u4E3B\u3001\u5206\u533A...", className: "w-full pl-9 pr-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300" })),
                 React.createElement("select", { value: upF, onChange: e => setUpF(e.target.value), className: "px-3 py-2 rounded-full bg-gray-100 text-sm focus:outline-none" },
@@ -593,7 +622,7 @@ function TodayView({ videos, ov, wl, config, toggleStar, toggleWatched }) {
             React.createElement("h3", { className: "text-xl font-black text-gray-800" }, "\u6240\u6709\u89C6\u9891\u90FD\u770B\u5B8C\u5566\uFF01"),
             React.createElement("p", { className: "text-gray-600 mt-2" }, "\u53BB B \u7AD9\u518D\u6536\u85CF\u4E00\u4E9B\u5427\uFF5E"));
     return (React.createElement("div", { className: "space-y-6" },
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 sm:p-3" },
             React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1" }, "\uD83D\uDCC5 \u6BCF\u65E5\u63A8\u8350"),
             React.createElement("p", { className: "text-sm text-gray-600" },
                 "\u6309\u4F60\u8BBE\u7F6E\u7684\u65F6\u957F\uFF08\uD83D\uDE97 ",
@@ -634,7 +663,7 @@ function HighlightsView({ videos, ov, wl, toggleStar, toggleWatched }) {
             React.createElement("h3", { className: "text-xl font-black text-gray-800" }, "\u8FD8\u6CA1\u6709\u7CBE\u534E\u89C6\u9891"),
             React.createElement("p", { className: "text-gray-600 mt-2" }, "\u5728\u89C6\u9891\u5361\u7247\u4E0A\u70B9\"\u52A0\u7CBE\"\uFF0C\u503C\u5F97\u56DE\u770B\u7684\u5185\u5BB9\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC"));
     return React.createElement("div", null,
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 mb-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 mb-5 sm:p-3 sm:mb-4" },
             React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1" }, "\u2B50 \u7CBE\u534E\u56DE\u770B"),
             React.createElement("p", { className: "text-sm text-gray-600" },
                 "\u4F60\u624B\u52A8\u52A0\u7CBE\u7684 ",
@@ -649,10 +678,10 @@ function SettingsView({ config, setConfig, videos, onReloadFolders, clearWatched
     const wlSet = new Set(config.whitelist || []);
     const toggleWl = mid => { const s = new Set(wlSet); s.has(mid) ? s.delete(mid) : s.add(mid); setConfig({ ...config, whitelist: [...s] }); };
     return (React.createElement("div", { className: "space-y-5" },
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 sm:p-3" },
             React.createElement("h3", { className: "text-lg font-black text-gray-800" }, "\uD83C\uDFAF \u6BCF\u65E5\u76EE\u6807\u65F6\u957F"),
             React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, "\u5F71\u54CD\u300C\u6BCF\u65E5\u6E05\u5355\u300D\u81EA\u52A8\u6253\u5305\u7684\u65F6\u957F"),
-            React.createElement("div", { className: "grid grid-cols-2 gap-4" },
+            React.createElement("div", { className: "grid grid-cols-2 gap-4 sm:grid-cols-1" },
                 React.createElement("div", null,
                     React.createElement("label", { className: "block text-sm font-bold text-amber-700 mb-1.5" }, "\uD83D\uDE97 \u5F00\u8F66\u542C"),
                     React.createElement("div", { className: "flex items-center gap-2" },
@@ -663,7 +692,7 @@ function SettingsView({ config, setConfig, videos, onReloadFolders, clearWatched
                     React.createElement("div", { className: "flex items-center gap-2" },
                         React.createElement("input", { type: "number", step: "0.5", min: "0.5", max: "8", value: config.watchTarget / 3600, onChange: e => setConfig({ ...config, watchTarget: Math.round((parseFloat(e.target.value) || 1) * 3600) }), className: "w-20 px-3 py-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-400 focus:outline-none font-mono text-lg" }),
                         React.createElement("span", { className: "text-gray-600" }, "\u5C0F\u65F6"))))),
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 sm:p-3" },
             React.createElement("h3", { className: "text-lg font-black text-gray-800" }, '🎙️ 「总是当听」的 UP 主'),
             React.createElement("p", { className: "text-sm text-gray-600 mb-3" }, "\u52FE\u9009\u540E\uFF0C\u4ED6\u4EEC\u7684\u6240\u6709\u89C6\u9891\u90FD\u5F52\u5230\u300C\u5F00\u8F66\u542C\u300D"),
             React.createElement("div", { className: "max-h-64 overflow-y-auto space-y-1.5" }, ups.map(u => (React.createElement("label", { key: u.mid, className: "flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer" },
@@ -672,7 +701,7 @@ function SettingsView({ config, setConfig, videos, onReloadFolders, clearWatched
                 React.createElement("span", { className: "text-xs text-gray-500 ml-1" },
                     u.count,
                     " \u4E2A")))))),
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 sm:p-3" },
             React.createElement("h3", { className: "text-lg font-black text-gray-800 mb-2" }, "\uD83D\uDD04 \u6570\u636E\u7BA1\u7406"),
             React.createElement("div", { className: "space-y-2" }, [
                 [onReloadFolders, RefreshCw, 'bg-purple-100 text-purple-700 hover:bg-purple-200', '重新选择/加载收藏夹'],
@@ -682,7 +711,7 @@ function SettingsView({ config, setConfig, videos, onReloadFolders, clearWatched
             ].map(([fn, Icon, cls, label]) => (React.createElement("button", { key: label, onClick: fn, className: `w-full flex items-center gap-2 px-4 py-3 rounded-2xl font-bold text-left transition ${cls}` },
                 React.createElement(Icon, { size: 18 }),
                 label))))),
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 text-sm text-gray-600 space-y-1" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 text-sm text-gray-600 space-y-1 sm:p-3" },
             React.createElement("p", { className: "font-black text-gray-800 text-lg mb-2" }, "\u2139\uFE0F \u5173\u4E8E"),
             React.createElement("p", null,
                 "\u5F53\u524D UID\uFF1A",
@@ -704,7 +733,7 @@ const TIERS = [
 ];
 const TIER_LABEL = { hong: '夯', ding: '顶级', rsr: '人上人', npc: 'NPC', la: '拉完了' };
 function RankChip({ v, dim, onDown }) {
-    return (React.createElement("div", { onPointerDown: e => onDown(e, v), title: v.title, style: { width: '7rem', touchAction: 'none', cursor: 'grab', opacity: dim ? 0.3 : 1, userSelect: 'none', WebkitUserSelect: 'none' }, className: "flex-shrink-0 bg-white rounded-xl shadow overflow-hidden transition-transform" },
+    return (React.createElement("div", { onPointerDown: e => onDown(e, v), title: v.title, style: { width: 'clamp(5.5rem, 20vw, 7rem)', touchAction: 'none', cursor: 'grab', opacity: dim ? 0.3 : 1, userSelect: 'none', WebkitUserSelect: 'none' }, className: "flex-shrink-0 bg-white rounded-xl shadow overflow-hidden transition-transform" },
         React.createElement("div", { className: "relative" },
             React.createElement("img", { src: v.cover, alt: "", referrerPolicy: "no-referrer", draggable: "false", className: "w-full h-16 object-cover bg-gray-100", onError: e => { e.target.style.opacity = '0.15'; } }),
             React.createElement("div", { className: "absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded font-mono" }, fmtDur(v.duration))),
@@ -742,7 +771,7 @@ function RankView({ videos, ov, setRating }) {
             React.createElement("p", { className: "text-gray-600 mt-2" }, "\u5728\u89C6\u9891\u5361\u7247\u4E0A\u70B9\u300C\u6807\u8BB0\u5DF2\u770B\u300D\uFF0C\u770B\u5B8C\u7684\u89C6\u9891\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\uFF0C\u62D6\u8FDB\u5BF9\u5E94\u6863\u4F4D\u5373\u53EF\u8BC4\u7EA7\u3002"));
     const ratedCount = watched.length - pool.length;
     return (React.createElement("div", { className: "space-y-5" },
-        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5" },
+        React.createElement("div", { className: "bg-white rounded-3xl shadow p-5 sm:p-3" },
             React.createElement("h2", { className: "text-xl font-black text-gray-800 mb-1 flex items-center gap-2" },
                 React.createElement(Trophy, { className: "text-amber-500", size: 22 }),
                 " \u62D6\u62FD\u8BC4\u7EA7"),
@@ -763,7 +792,7 @@ function RankView({ videos, ov, setRating }) {
                     items.map(v => React.createElement(RankChip, { key: v.bvid, v: v, dim: (drag === null || drag === void 0 ? void 0 : drag.bvid) === v.bvid, onDown: onDown })),
                     !items.length && React.createElement("span", { className: "text-sm text-gray-400 self-center" }, "\u62D6\u5230\u8FD9\u91CC\u2026"))));
         })),
-        React.createElement("div", { "data-tier": "pool", style: { outline: hover === 'pool' ? '3px solid rgba(168,85,247,.6)' : 'none' }, className: "bg-white rounded-3xl shadow p-5 transition-all" },
+        React.createElement("div", { "data-tier": "pool", style: { outline: hover === 'pool' ? '3px solid rgba(168,85,247,.6)' : 'none' }, className: "bg-white rounded-3xl shadow p-5 transition-all sm:p-3" },
             React.createElement("div", { className: "flex items-center justify-between mb-3" },
                 React.createElement("h3", { className: "text-lg font-black text-gray-800" }, "\uD83D\uDCE5 \u5F85\u8BC4\u7EA7"),
                 React.createElement("span", { className: "text-sm font-bold text-gray-500" },
@@ -909,8 +938,8 @@ function App() {
             React.createElement(Loader2, { className: "animate-spin text-pink-500", size: 32 }));
     if (loading) {
         const pct = loading.tot > 0 ? Math.min(100, Math.round(loading.cur / loading.tot * 100)) : 0;
-        return React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6" },
-            React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-10 max-w-md w-full text-center" },
+        return React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100 flex items-center justify-center p-6 sm:p-4" },
+            React.createElement("div", { className: "bg-white rounded-3xl shadow-xl p-10 max-w-md w-full text-center sm:p-6" },
                 React.createElement("div", { className: "inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 mb-6" },
                     React.createElement(Loader2, { className: "animate-spin text-white", size: 36 })),
                 React.createElement("h2", { className: "text-2xl font-black text-gray-800 mb-2" }, "\u6B63\u5728\u52A0\u8F7D"),
@@ -928,11 +957,11 @@ function App() {
         return React.createElement(SetupView, { midInput: midInput, setMidInput: setMidInput, onSubmit: loadFolders, error: error });
     return (React.createElement("div", { className: "min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-amber-100" },
         React.createElement("header", { className: "bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10" },
-            React.createElement("div", { className: "max-w-6xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3" },
-                React.createElement("h1", { className: "text-2xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent flex items-center gap-2" },
+            React.createElement("div", { className: "max-w-6xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3 sm:px-3 sm:py-3 sm:gap-2" },
+                React.createElement("h1", { className: "text-2xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 bg-clip-text text-transparent flex items-center gap-2 sm:text-xl" },
                     React.createElement("span", { className: "text-3xl" }, "\uD83D\uDCFA"),
                     " B\u7AD9\u6536\u85CF\u6574\u7406\u5668"),
-                React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-1" },
+                React.createElement("div", { className: "flex gap-1 bg-gray-100 rounded-full p-1 sm:overflow-x-auto" },
                     React.createElement(TabBtn, { active: view === 'library', onClick: () => setView('library'), icon: Library }, "\u5168\u90E8"),
                     React.createElement(TabBtn, { active: view === 'today', onClick: () => setView('today'), icon: Calendar }, "\u6BCF\u65E5\u6E05\u5355"),
                     React.createElement(TabBtn, { active: view === 'highlights', onClick: () => setView('highlights'), icon: Sparkles }, "\u7CBE\u534E"),

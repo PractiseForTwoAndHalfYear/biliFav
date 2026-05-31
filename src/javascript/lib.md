@@ -1,6 +1,6 @@
 # 核心库（Lib）
 
-**文件位置：** `bili-fav-fast.html` L261-L289
+**文件位置：** `bili-fav-fast.html` L290-L318
 
 ## 内容
 
@@ -8,7 +8,7 @@
 const { useState, useEffect, useMemo, useRef } = React;
 ```
 
-### localStorage 适配器 (L263-279)
+### localStorage 适配器 (L292-308)
 
 ```js
 const LS = {
@@ -18,7 +18,7 @@ const LS = {
 };
 ```
 
-### 存储键名常量 (L280)
+### 存储键名常量 (L309)
 
 ```js
 const STORE = {
@@ -28,17 +28,17 @@ const STORE = {
 };
 ```
 
-### 默认配置 (L281)
+### 默认配置 (L310)
 
 ```js
 const DEFAULT_CONFIG = { mid: '', folders: [], whitelist: [], listenTarget: 7200, watchTarget: 3600 };
 ```
 
-### 自动分类关键词 (L282)
+### 自动分类关键词 (L311)
 
 `LISTEN_KW` — 用于 `autoBucket()` 判断视频是否为"听"类的关键词列表（访谈、播客、演讲等）。
 
-### CORS 代理列表 (L283-288)
+### CORS 代理列表 (L312-317)
 
 ```js
 const PROXIES = [
@@ -51,7 +51,7 @@ const PROXIES = [
 
 遇到失败时自动按序切换（failover）。
 
-### 工具 (L289)
+### 工具 (L318)
 
 ```js
 const sleep = ms => new Promise(r => setTimeout(r, ms));

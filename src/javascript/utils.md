@@ -1,10 +1,10 @@
 # 工具函数（Utilities）
 
-**文件位置：** `bili-fav-fast.html` L341-L426
+**文件位置：** `bili-fav-fast.html` L370-L455
 
 ## 函数列表
 
-### `biliFetch(url)` (L341-371)
+### `biliFetch(url)` (L370-400)
 
 Bilibili API 请求函数。通过 CORS 代理链获取数据，支持自动 failover。
 
@@ -17,19 +17,19 @@ Bilibili API 请求函数。通过 CORS 代理链获取数据，支持自动 fai
 
 **错误提示：** `所有代理均失败（xxx）。请确认收藏夹已设公开，或稍后重试。`
 
-### `fmtDur(seconds)` (L372-373)
+### `fmtDur(seconds)` (L401-402)
 
 格式化视频时长。例：`3720` → `"1:02:00"`，`125` → `"2:05"`
 
-### `fmtDurChn(seconds)` (L374)
+### `fmtDurChn(seconds)` (L403)
 
 中文时长描述。例：`3720` → `"1小时2分"`，`125` → `"2分钟"`
 
-### `fmtDate(timestamp)` (L375)
+### `fmtDate(timestamp)` (L404)
 
 格式化收藏日期。例：`1700000000` → `"1/15"`
 
-### `autoBucket(video, whitelistSet)` (L376-386)
+### `autoBucket(video, whitelistSet)` (L405-415)
 
 自动分类视频为"听"（listen）或"看"（watch）。
 
@@ -39,11 +39,11 @@ Bilibili API 请求函数。通过 CORS 代理链获取数据，支持自动 fai
 3. 分区名包含"演讲""访谈""播客""脱口秀" → `'listen'`
 4. 否则 → `'watch'`
 
-### `getBucket(video, overrides, whitelistSet)` (L387)
+### `getBucket(video, overrides, whitelistSet)` (L416)
 
 获取视频的最终分类：优先使用用户手动覆盖（overrides），否则使用 `autoBucket`。
 
-### `buildDays(videos, overrides, whitelistSet, listenSec, watchSec)` (L388-426)
+### `buildDays(videos, overrides, whitelistSet, listenSec, watchSec)` (L417-455)
 
 构建每日清单。将未看的视频按"听/看"分类，分别打包到最多 30 天。
 

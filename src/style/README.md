@@ -4,8 +4,9 @@
 
 ## CSS 内联样式块
 
-- **文件位置：** `bili-fav-fast.html` L9-L255
-- **整体风格：** 手写 Tailwind 风格工具类（约 250 个类）
+- **文件位置：** `bili-fav-fast.html` L9-L284
+- **整体风格：** 手写 Tailwind 风格工具类（约 280 个类）
+- **移动端适配：** L256-L284，`@media (max-width:639px)` 响应式工具类
 - **CSS 变量：** 使用 `--tw-gradient-from`、`--tw-gradient-stops`、`--tw-gradient-to` 实现渐变色
 - **动画：** `@keyframes spin`（L22）
 

@@ -1,10 +1,10 @@
 # 共享 UI 组件（Components）
 
-**文件位置：** `bili-fav-fast.html` L427-L470
+**文件位置：** `bili-fav-fast.html` L456-L499
 
 ## 组件列表
 
-### `TabBtn` (L428-432)
+### `TabBtn` (L457-461)
 
 导航标签按钮。
 
@@ -13,7 +13,7 @@
 - `active` 时：白色背景 + 阴影 + 紫色文字
 - 非 `active` 时：灰色文字，hover 变深
 
-### `StatCard` (L433-439)
+### `StatCard` (L462-468)
 
 统计卡片，用于 LibraryView 顶部的数据概览。
 
@@ -29,7 +29,7 @@
 - 已看：`from-gray-400 to-gray-500` ✅
 - 精华：`from-yellow-400 to-amber-400` ⭐
 
-### `ChipBtn` (L440-442)
+### `ChipBtn` (L469-471)
 
 小型筛选标签按钮。
 
@@ -37,7 +37,7 @@
 
 - 样式与 `TabBtn` 类似，但尺寸更小（`px-3 py-1.5`）
 
-### `VideoCard` (L443-470)
+### `VideoCard` (L472-499)
 
 视频卡片组件，是应用中最核心的 UI 组件。
 

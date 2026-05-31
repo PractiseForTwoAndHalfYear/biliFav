@@ -103,32 +103,32 @@ biliFav-main/
 ### 页面视图（7 个）
 | 视图 | 行号 | 功能 |
 |------|------|------|
-| SetupView | L471 | UID 输入首页 |
-| FolderPickerView | L499 | 收藏夹选择器 |
-| LibraryView | L526 | 全部视频库（搜索/筛选/排序） |
-| TodayView | L588 | 每日清单（自动打包） |
-| HighlightsView | L629 | 精华回看 |
-| SettingsView | L645 | 设置与数据管理 |
-| RankView | L698 | 拖拽评级（5 档位） |
+| SetupView | L500 | UID 输入首页 |
+| FolderPickerView | L528 | 收藏夹选择器 |
+| LibraryView | L555 | 全部视频库（搜索/筛选/排序） |
+| TodayView | L617 | 每日清单（自动打包） |
+| HighlightsView | L658 | 精华回看 |
+| SettingsView | L674 | 设置与数据管理 |
+| RankView | L727 | 拖拽评级（5 档位） |
 
 ### 共享 UI 组件（4 个）
 | 组件 | 行号 | 用途 |
 |------|------|------|
-| TabBtn | L428 | 导航标签 |
-| StatCard | L433 | 统计卡片 |
-| ChipBtn | L440 | 筛选标签 |
-| VideoCard | L443 | 视频卡片（核心组件） |
+| TabBtn | L457 | 导航标签 |
+| StatCard | L462 | 统计卡片 |
+| ChipBtn | L469 | 筛选标签 |
+| VideoCard | L472 | 视频卡片（核心组件） |
 
 ### 工具函数（7 个）
 | 函数 | 行号 | 用途 |
 |------|------|------|
-| biliFetch | L341 | B 站 API 请求（代理 failover） |
-| fmtDur | L372 | 秒→mm:ss / h:mm:ss |
-| fmtDurChn | L374 | 秒→中文描述 |
-| fmtDate | L375 | 时间戳→月/日 |
-| autoBucket | L376 | 自动分类听/看 |
-| getBucket | L387 | 获取最终分类（用户覆盖优先） |
-| buildDays | L388 | 构建每日清单 |
+| biliFetch | L370 | B 站 API 请求（代理 failover） |
+| fmtDur | L401 | 秒→mm:ss / h:mm:ss |
+| fmtDurChn | L403 | 秒→中文描述 |
+| fmtDate | L404 | 时间戳→月/日 |
+| autoBucket | L405 | 自动分类听/看 |
+| getBucket | L416 | 获取最终分类（用户覆盖优先） |
+| buildDays | L417 | 构建每日清单 |
 
 ## 常用命令
 
